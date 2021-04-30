@@ -2,28 +2,52 @@
 
 Monster::Monster()
 {
-	
+	LoadDefaultInfo();
 }
 
-void Monster::CreateMonster()
+void Monster::LoadDefaultInfo()
 {
-	
+	int iCount;
+	ifstream m_fLoad;
+	MOP tmp;
+
+	m_fLoad.open("DefaultMonster.txt");
+	if (m_fLoad.is_open())
+	{
+		m_fLoad >> iCount;
+
+		for (int i = 0; i < iCount; i++)
+		{
+			m_fLoad >> tmp.m_strMopName >> tmp.m_iAttack >> tmp.m_iHP >>tmp.m_iEXP >> tmp.m_iGetEXP >> tmp.m_iLevel >> tmp.m_iGold;
+			MonsterList.push_back(tmp);
+		}
+	}
+	m_fLoad.close();
 }
 
 void Monster::ShowInfo()
 {
+	int i = 1;
+	int iHeight = HEIGHT - 29;
 	system("cls");
 	BLUE
 		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	YELLOW
-		DrawMidText("===== ", WIDTH - 8, HEIGHT / 2 - 4);
-	cout << MonInfo.m_strMopName << "(" << MonInfo.m_iLevel << "Lv)" << " =====" << endl;
-	DrawMidText("공격력 = ", WIDTH - 10, HEIGHT / 2 - 3);
-	cout << MonInfo.m_iAttack << "\t" << " 생명력 = " << MonInfo.m_iDefaultHP << "/" << MonInfo.m_iHP << endl;
-	DrawMidText("경험치 = ", WIDTH - 10, HEIGHT / 2 - 2);
-	cout << MonInfo.m_iEXP << "/" << MonInfo.m_iDefaultEXP << "\t" << " GetEXP : " << MonInfo.m_iGetEXP << endl;
-	DrawMidText("Gold = ", WIDTH - 11, HEIGHT / 2 - 1);
-	cout << MonInfo.m_iGold << endl;
+		for (vector<MOP>::iterator iter = MonsterList.begin(); iter != MonsterList.end(); iter++)
+		{
+			iHeight += i;
+			gotoxy(WIDTH - 8, iHeight);
+			cout << "===== " << iter->m_strMopName << "(" << iter->m_iLevel << "Lv)" << " =====" << endl;
+			iHeight += i;
+			gotoxy(WIDTH - 12, iHeight);
+			cout << "공격력 = " << iter->m_iAttack << "\t" << "생명력 = " << iter->m_iHP << "/" << iter->m_iHP << endl;
+			iHeight += i;
+			gotoxy(WIDTH - 12, iHeight);
+			cout << "경험치 = " << iter->m_iEXP << "/" << iter->m_iEXP << "\t" << "GetEXP : " << iter->m_iGetEXP << endl;
+			iHeight += i;
+			gotoxy(WIDTH - 12, iHeight);
+			cout << "Gold = " << iter->m_iGold << endl;
+		}
 }
 
 Monster::~Monster()

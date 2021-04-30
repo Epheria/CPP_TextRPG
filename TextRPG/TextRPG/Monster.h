@@ -9,9 +9,7 @@ typedef struct MOP
 	int m_iLevel;
 	int m_iAttack;
 	int m_iHP;
-	int m_iDefaultHP;
 	int m_iEXP;
-	int m_iDefaultEXP;
 	int m_iGetEXP;
 	int m_iGold;
 }MOP;
@@ -22,8 +20,8 @@ private:
 	MOP MonInfo;
 	vector<MOP> MonsterList;
 public:
+	void LoadDefaultInfo();
 	void ShowInfo();
-	void CreateMonster();
 	Monster();
 	~Monster();
 };

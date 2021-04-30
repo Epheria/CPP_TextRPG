@@ -2,15 +2,10 @@
 
 Player::Player()
 {
-	m_iLevel = 1;
-	m_iAttack = 5;
+	LoadDefaultInfo();
 	m_iDefaultHP = 50;
-	m_iHP = 50;
-	m_iEXP = 0;
 	m_iDefaultEXP = 10;
-	m_iGetEXP = 0;
-	m_iGold = 1000;
-	m_bWeapon = true;
+	m_bWeapon = false;
 }
 
 void Player::CreateName()
@@ -25,8 +20,14 @@ void Player::LoadDefaultInfo()
 	m_fLoad.open("DefaultPlayer.txt");
 	if (m_fLoad.is_open())
 	{
-		m_fLoad >> m_
+		m_fLoad >> m_iAttack;
+		m_fLoad >> m_iHP;
+		m_fLoad >> m_iEXP;
+		m_fLoad >> m_iGetEXP;
+		m_fLoad >> m_iLevel;
+		m_fLoad >> m_iGold;
 	}
+	m_fLoad.close();
 }
 
 void Player::ShowInfo()

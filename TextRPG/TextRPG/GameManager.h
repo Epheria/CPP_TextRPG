@@ -16,6 +16,7 @@ public:
 	void NewGame();
 	void ShowGameMenu();
 	void LoadGame();
+	void ShowDungeon();
 	GameManager();
 	~GameManager();
 };
