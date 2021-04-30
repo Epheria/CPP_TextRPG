@@ -28,6 +28,8 @@ using namespace std;
 //////////////////////////////////////////////////////
 #define WIDTH 30
 #define HEIGHT 30
+#define START_X 0
+#define START_Y 0
 
 enum STARTTYPE
 {

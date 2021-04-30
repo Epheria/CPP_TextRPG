@@ -3,8 +3,8 @@
 class Character
 {
 public:
-	virtual void CreateName() = 0;
-
+	virtual void LoadDefaultInfo() = 0;
+	virtual void ShowInfo() = 0;
 	Character();
 	virtual ~Character();
 };

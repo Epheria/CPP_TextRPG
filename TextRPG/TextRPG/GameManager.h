@@ -5,17 +5,16 @@
 #include "Player.h"
 #include "Monster.h"
 #include "Character.h"
-#define START_X 0
-#define START_Y 0
 class GameManager : public MapDraw
 {
 private:
 	Player m_User;
-	vector<MOP> m_MonsterList;
+	Monster m_Monster;
 
 public:
 	void ShowStartMenu();
 	void NewGame();
+	void ShowGameMenu();
 	void LoadGame();
 	GameManager();
 	~GameManager();
