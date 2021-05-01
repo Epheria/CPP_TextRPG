@@ -4,7 +4,6 @@ Character::Character()
 {
 }
 
-
 Character::~Character()
 {
 }

@@ -10,13 +10,16 @@ class GameManager : public MapDraw
 private:
 	Player m_User;
 	Monster m_Monster;
-
+	Weapon m_Weapon;
+	//vector<MOP> MonsterList;
+	//vector<WeaponInfo> WeaponList;
 public:
 	void ShowStartMenu();
 	void NewGame();
 	void ShowGameMenu();
 	void LoadGame();
 	void ShowDungeon();
+	void ShowShopMenu();
 	GameManager();
 	~GameManager();
 };

@@ -2,7 +2,6 @@
 
 Monster::Monster()
 {
-	LoadDefaultInfo();
 }
 
 void Monster::LoadDefaultInfo()

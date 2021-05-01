@@ -2,7 +2,6 @@
 
 Player::Player()
 {
-	LoadDefaultInfo();
 	m_iDefaultHP = 50;
 	m_iDefaultEXP = 10;
 	m_bWeapon = false;
@@ -47,6 +46,7 @@ void Player::ShowInfo()
 	if (m_bWeapon == true)
 	{
 		DrawMidText("무기타입 : ", WIDTH - 14, HEIGHT / 2);
+		
 	}
 }
 

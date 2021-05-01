@@ -14,10 +14,9 @@ typedef struct MOP
 	int m_iGold;
 }MOP;
 
-class Monster : public Character, public MapDraw
+class Monster : public Character, virtual MapDraw
 {
 private:
-	MOP MonInfo;
 	vector<MOP> MonsterList;
 public:
 	void LoadDefaultInfo();

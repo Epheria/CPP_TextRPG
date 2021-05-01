@@ -40,6 +40,8 @@ void GameManager::NewGame()
 	YELLOW
 	DrawMidText("Player 이름 입력 : ", WIDTH, HEIGHT / 2);
 	m_User.CreateName();
+	m_User.LoadDefaultInfo();
+	m_Monster.LoadDefaultInfo();
 	ShowGameMenu();
 }
 
@@ -75,7 +77,7 @@ void GameManager::ShowGameMenu()
 			ch = _getch();
 			break;
 		case 4:
-
+			ShowShopMenu();
 			break;
 		case 5:
 			
@@ -106,8 +108,8 @@ void GameManager::ShowDungeon()
 	DrawMidText("4층던전 : [오우거]", WIDTH, HEIGHT / 2 + 2);
 	DrawMidText("5층던전 : [스켈레톤아처]", WIDTH, HEIGHT / 2 + 5);
 	DrawMidText("6층던전 : [리치]", WIDTH, HEIGHT / 2 + 8);
-	DrawMidText("돌아가기]", WIDTH, HEIGHT / 2 + 11);
-	iSelect = MenuSelectCursor(6, 3, WIDTH / 3, HEIGHT / 2 - 7);
+	DrawMidText("돌아가기", WIDTH, HEIGHT / 2 + 11);
+	iSelect = MenuSelectCursor(7, 3, WIDTH / 4, HEIGHT / 2 - 7);
 	while (1)
 	{
 		switch (iSelect)
@@ -124,6 +126,52 @@ void GameManager::ShowDungeon()
 
 		case 6:
 
+		case 7:
+			return;
+		}
+	}
+}
+
+void GameManager::ShowShopMenu()
+{
+	int iSelect;
+
+	while (1)
+	{
+		system("cls");
+		BLUE
+			BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		ORIGINAL
+			DrawMidText("♧ ♣ S H O P ♣ ♧", WIDTH, HEIGHT / 2 - 10);
+		DrawMidText("Dagger", WIDTH, HEIGHT / 2 - 7);
+		DrawMidText("Gun", WIDTH, HEIGHT / 2 - 4);
+		DrawMidText("Sword", WIDTH, HEIGHT / 2 - 1);
+		DrawMidText("Wand", WIDTH, HEIGHT / 2 + 2);
+		DrawMidText("Bow", WIDTH, HEIGHT / 2 + 5);
+		DrawMidText("Hammer", WIDTH, HEIGHT / 2 + 8);
+		DrawMidText("돌아가기", WIDTH, HEIGHT / 2 + 11);
+		iSelect = MenuSelectCursor(7, 3, WIDTH / 4, HEIGHT / 2 - 7);
+
+		switch (iSelect)
+		{
+		case 1:
+			m_Weapon.ShowWeaponInfo(DAGGER, m_User, "Dagger");
+			break;
+		case 2:
+			m_Weapon.ShowWeaponInfo(GUN, m_User, "Gun");
+			break;
+		case 3:
+			m_Weapon.ShowWeaponInfo(SWORD, m_User, "Sword");
+			break;
+		case 4:
+			m_Weapon.ShowWeaponInfo(WAND, m_User, "Wand");
+			break;
+		case 5:
+			m_Weapon.ShowWeaponInfo(BOW, m_User, "Bow");
+			break;
+		case 6:
+			m_Weapon.ShowWeaponInfo(HAMMER, m_User, "Hammer");
+			break;
 		case 7:
 			return;
 		}
