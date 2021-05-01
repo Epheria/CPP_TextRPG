@@ -11,15 +11,19 @@ private:
 	Player m_User;
 	Monster m_Monster;
 	Weapon m_Weapon;
-	//vector<MOP> MonsterList;
-	//vector<WeaponInfo> WeaponList;
+	bool m_bGameOver;
+
 public:
 	void ShowStartMenu();
 	void NewGame();
-	void ShowGameMenu();
 	void LoadGame();
+	void ShowGameMenu();
 	void ShowDungeon();
 	void ShowShopMenu();
+	void Battle(int index);
+	bool WinnerCheck(char MonsterAtk, char UserAtk, int index);
+	void PrintAttack(char ch);
+	void GameOver();
 	GameManager();
 	~GameManager();
 };

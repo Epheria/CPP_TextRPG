@@ -22,13 +22,7 @@ public:
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void NextPage(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void LoadWeapon();
-	inline vector<WeaponInfo> GetWeapon(int i)
-	{
-		vector<WeaponInfo> tmp;
-		tmp[0] = WeaponList[i];
-		return tmp;
-	}
-	//virtual void SkillSet() = 0;
+//	virtual void SkillSet() = 0;
 	Weapon();
 	~Weapon();
 };
@@ -38,6 +32,7 @@ class Bow : public Weapon
 private:
 
 public:
+
 };
 
 class Dagger : public Weapon

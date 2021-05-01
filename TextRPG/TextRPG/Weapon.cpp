@@ -84,7 +84,10 @@ void Weapon::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName)
 				if (iGold < WeaponList[iIndex_s].m_iPrice)
 					continue;
 				else
+				{
 					User.BuyWeapon(WeaponList[iIndex_s].m_iPrice);
+					User.EquipWeapon(WeaponList, iIndex_s);
+				}
 				continue;
 			}
 			else if (iSelect == iMax + 1)
@@ -106,7 +109,10 @@ void Weapon::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName)
 				if (iGold < WeaponList[iIndex_s].m_iPrice)
 					continue;
 				else
+				{
 					User.BuyWeapon(WeaponList[iIndex_s].m_iPrice);
+					User.EquipWeapon(WeaponList, iIndex_s);
+				}
 				continue;
 			}
 			else if (iSelect == 6)
@@ -173,7 +179,10 @@ void Weapon::NextPage(int WEAPONTYPE, Player& User, string WeaponTypeName)
 				if (iGold < WeaponList[iIndex_s].m_iPrice)
 					continue;
 				else
+				{
 					User.BuyWeapon(WeaponList[iIndex_s].m_iPrice);
+					User.EquipWeapon(WeaponList, iIndex_s);
+				}
 				continue;
 			}
 			else if (iSelect == iMax - 5 + 1)
@@ -195,7 +204,10 @@ void Weapon::NextPage(int WEAPONTYPE, Player& User, string WeaponTypeName)
 				if (iGold < WeaponList[iIndex_s].m_iPrice)
 					continue;
 				else
+				{
 					User.BuyWeapon(WeaponList[iIndex_s].m_iPrice);
+					User.EquipWeapon(WeaponList, iIndex_s);
+				}
 				continue;
 			}
 			else if (iSelect == 6)
