@@ -30,7 +30,7 @@ public:
 	void ShowInventory();
 	void LevelUP();
 	void Win(Monster& m_Monster, int index);
-	void Save(ofstream& m_fSave, int iSelect);
+	void Save(ofstream& m_fSave, int iSelect, string m_FileName[]);
 	void Load(ifstream& m_fLoad, int iSelect);
 
 	inline int GetGold()

@@ -49,13 +49,10 @@ void GameManager::NewGame()
 
 void GameManager::ShowFileList()
 {
-	string FileName[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
-	,"SavePlayer9.txt" ,"SavePlayer10.txt" };
-
 	ifstream m_fLoad[10];
 	for (int i = 0; i < 10; i++)
 	{
-		m_fLoad[i].open(FileName[i]);
+		m_fLoad[i].open(m_FileName[i]);
 	}
 
 
@@ -137,10 +134,7 @@ void GameManager::LoadGame()
 
 void GameManager::LoadCheck(ifstream& m_fLoad, int iSelect)
 {
-	string FileName[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
-	,"SavePlayer9.txt" ,"SavePlayer10.txt" };
-
-	m_fLoad.open(FileName[iSelect - 1]);
+	m_fLoad.open(m_FileName[iSelect - 1]);
 	if (!m_fLoad.is_open())
 	{
 		system("cls");
@@ -218,41 +212,12 @@ void GameManager::SaveGame()
 		ShowFileList();
 		iSelect = MenuSelectCursor(11, 2, WIDTH / 4, HEIGHT - 28 + 2);
 
-		switch (iSelect)
+		if (iSelect >= 1 && iSelect <= 10)
 		{
-		case 1:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 2:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 3:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 4:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 5:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 6:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 7:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 8:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 9:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 10:
-			m_User.Save(m_fSave, iSelect);
-			break;
-		case 11:
-			return;
+			m_User.Save(m_fSave, iSelect, m_FileName);
 		}
+		else if (iSelect == 11)
+			return;
 	}
 
 }

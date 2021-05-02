@@ -183,13 +183,10 @@ void Player::LevelUP()
 	m_iDefaultEXP += 3;
 }
 
-void Player::Save(ofstream& m_fSave, int iSelect)
+void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 {
-	string FileName[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
-	,"SavePlayer9.txt" ,"SavePlayer10.txt" };
-
 	char ch;
-	m_fSave.open(FileName[iSelect - 1]);
+	m_fSave.open(m_FileName[iSelect - 1]);
 	if (m_fSave.is_open())
 	{
 		m_fSave << m_strPlayerName << " " << m_iAttack << " " << m_iHP << " " << m_iDefaultEXP << " "

@@ -264,7 +264,7 @@ int Weapon::UseSkill(int WEAPONTYPE, int PlayerAtk)
 		if (iRand == 0)
 		{
 			YELLOW
-				DrawMidText("백스텝 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+				DrawMidText("급소찌르기 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
 			ch = _getch();
 			return PlayerAtk * 3;
 		}
