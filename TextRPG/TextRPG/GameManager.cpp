@@ -47,76 +47,116 @@ void GameManager::NewGame()
 	ShowGameMenu();
 }
 
-void GameManager::LoadGame()
+void GameManager::ShowFileList()
 {
-	ifstream m_fLoad[10];
-	int iSelect;
-	string str[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
+	string FileName[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
 	,"SavePlayer9.txt" ,"SavePlayer10.txt" };
+
+	ifstream m_fLoad[10];
 	for (int i = 0; i < 10; i++)
 	{
-		m_fLoad[i].open(str[i]);
+		m_fLoad[i].open(FileName[i]);
 	}
 
-	while (1)
-	{
-		int iHeight = HEIGHT - 28;
-		system("cls");
-		BLUE
-			BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
-		GREEN
-			for (int i = 0; i < 10; i++)
-			{
-				if (m_fLoad[i].is_open())
-				{
-					iHeight += 2;
-					gotoxy(WIDTH - 10, iHeight);
-					cout << i << "번슬롯 : (파일여부 : ○)";
-				}
-				else
-				{
-					iHeight += 2;
-					gotoxy(WIDTH - 10, iHeight);
-					cout << i << "번슬롯 : (파일여부 : ×)";
-				}
-			}
-		gotoxy(WIDTH - 10, iHeight + 2);
-		cout << "11.돌아가기";
-		iSelect = MenuSelectCursor(11, 2, WIDTH / 4, HEIGHT -28 + 2);
-		switch (iSelect)
+
+	int iHeight = HEIGHT - 28;
+	system("cls");
+	BLUE
+		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+	GREEN
+		for (int i = 0; i < 10; i++)
 		{
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-			if (!m_fLoad->is_open())
+			if (m_fLoad[i].is_open())
 			{
-				system("cls");
-				BLUE
-					BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
-				ORIGINAL
-					DrawMidText("해당 파일이 없습니다.", WIDTH, HEIGHT / 2);
-				system("pause");
-				break;
+				iHeight += 2;
+				gotoxy(WIDTH - 10, iHeight);
+				cout << i + 1 << "번슬롯 : (파일여부 : ○)";
 			}
 			else
 			{
-				m_fLoad[iSelect].open(str[iSelect]);
-				
+				iHeight += 2;
+				gotoxy(WIDTH - 10, iHeight);
+				cout << i + 1 << "번슬롯 : (파일여부 : ×)";
 			}
+		}
+	gotoxy(WIDTH - 10, iHeight + 2);
+	cout << "11.돌아가기";
+	for (int i = 0; i < 10; i++)
+	{
+		m_fLoad[i].close();
+	}
+}
+
+void GameManager::LoadGame()
+{
+	ifstream m_fLoad;
+	int iSelect;
+	while (1)
+	{
+		ShowFileList();
+		iSelect = MenuSelectCursor(11, 2, WIDTH / 4, HEIGHT - 28 + 2);
+		switch (iSelect)
+		{
+		case 1:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 2:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 3:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 4:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 5:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 6:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 7:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 8:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 9:
+			LoadCheck(m_fLoad, iSelect);
+			return;
+		case 10:
+			LoadCheck(m_fLoad, iSelect);
+			return;
 		case 11:
-			for (int i = 0; i < 10; i++)
-			{
-				m_fLoad[i].close();
-			}
+			m_fLoad.close();
 			return;
 		}
+
+	}
+}
+
+void GameManager::LoadCheck(ifstream& m_fLoad, int iSelect)
+{
+	string FileName[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
+	,"SavePlayer9.txt" ,"SavePlayer10.txt" };
+
+	m_fLoad.open(FileName[iSelect - 1]);
+	if (!m_fLoad.is_open())
+	{
+		system("cls");
+		BLUE
+			BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		ORIGINAL
+			DrawMidText("해당 파일이 없습니다.", WIDTH, HEIGHT / 2);
+		system("pause");
+		return;
+	}
+	else
+	{
+		m_bGameOver = false;
+		m_User.Load(m_fLoad, iSelect);
+		m_Monster.LoadDefaultInfo();
+		ShowGameMenu();
 	}
 }
 
@@ -157,7 +197,7 @@ void GameManager::ShowGameMenu()
 			ShowShopMenu();
 			break;
 		case 5:
-			
+			SaveGame();
 			break;
 		case 6:
 			m_Monster.ResetMonster();
@@ -166,6 +206,55 @@ void GameManager::ShowGameMenu()
 			return;
 		}
 	}
+}
+
+void GameManager::SaveGame()
+{
+	int iSelect;
+	ofstream m_fSave;
+
+	while (1)
+	{
+		ShowFileList();
+		iSelect = MenuSelectCursor(11, 2, WIDTH / 4, HEIGHT - 28 + 2);
+
+		switch (iSelect)
+		{
+		case 1:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 2:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 3:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 4:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 5:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 6:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 7:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 8:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 9:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 10:
+			m_User.Save(m_fSave, iSelect);
+			break;
+		case 11:
+			return;
+		}
+	}
+
 }
 
 void GameManager::ShowDungeon()

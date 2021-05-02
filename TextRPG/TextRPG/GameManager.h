@@ -17,6 +17,9 @@ public:
 	void ShowStartMenu();
 	void NewGame();
 	void LoadGame();
+	void LoadCheck(ifstream& m_fLoad, int iSelect);
+	void ShowFileList();
+	void SaveGame();
 	void ShowGameMenu();
 	void ShowDungeon();
 	void ShowShopMenu();

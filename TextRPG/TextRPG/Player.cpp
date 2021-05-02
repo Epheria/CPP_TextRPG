@@ -96,8 +96,8 @@ void Player::ShowInventory()
 			cout << iter->m_strName;
 		}
 	iSelect = MenuSelectCursor(m_Inventory.size(), 2, WIDTH / 4, HEIGHT - 28);
-
 	m_iWeaponSelect = iSelect - 1;
+	m_bWeapon = true;
 }
 
 void Player::ShowWeaponType(int iType)
@@ -181,6 +181,59 @@ void Player::LevelUP()
 	m_iDefaultHP += GetHP;
 	m_iHP = m_iDefaultHP;
 	m_iDefaultEXP += 3;
+}
+
+void Player::Save(ofstream& m_fSave, int iSelect)
+{
+	string FileName[] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
+	,"SavePlayer9.txt" ,"SavePlayer10.txt" };
+
+	char ch;
+	m_fSave.open(FileName[iSelect - 1]);
+	if (m_fSave.is_open())
+	{
+		m_fSave << m_strPlayerName << " " << m_iAttack << " " << m_iHP << " " << m_iDefaultEXP << " "
+			<< m_iGetEXP << " " << m_iLevel << " " << m_iGold << " " << m_iEXP << " " << m_iDefaultHP << endl;
+		m_fSave << m_Inventory.size() << endl;
+		if (!m_Inventory.empty())
+		{
+			for (vector<WeaponInfo>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
+			{
+				m_fSave << iter->m_iWEAPONTYPE << " " << iter->m_strName << " " << iter->m_iAttack << " " << iter->m_iPrice << endl;
+			}
+		}
+	}
+	system("cls");
+	BLUE
+		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+	ORIGINAL
+		gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
+	cout << "Save 완료";
+	ch = _getch();
+}
+
+void Player::Load(ifstream& m_fLoad, int iSelect)
+{
+	char ch;
+	int invenSize;
+	WeaponInfo tmp;
+	m_fLoad >> m_strPlayerName >> m_iAttack >> m_iHP >> m_iDefaultEXP >> m_iGetEXP >> m_iLevel >> m_iGold >> m_iEXP >> m_iDefaultHP;
+	m_fLoad >> invenSize;
+	if (invenSize > 0)
+	{
+		for (int i = 0; i < invenSize; i++)
+		{
+			m_fLoad >> tmp.m_iWEAPONTYPE >> tmp.m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
+			m_Inventory.push_back(tmp);
+		}
+	}
+	system("cls");
+	BLUE
+		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+	ORIGINAL
+		gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
+	cout << "Load 완료";
+	ch = _getch();
 }
 
 Player::~Player()
