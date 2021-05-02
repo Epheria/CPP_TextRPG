@@ -133,9 +133,9 @@ void Player::Win(Monster& m_Monster, int index)
 	BLUE
 		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
-		gotoxy(WIDTH, HEIGHT - 20);
+		gotoxy(WIDTH - 4, HEIGHT - 20);
 	cout << m_strPlayerName << " 승리!!";
-	gotoxy(WIDTH, HEIGHT - 17);
+	gotoxy(WIDTH - 4, HEIGHT - 17);
 	cout << m_strPlayerName << "가 경험치 ";
 	m_iGetEXP = m_Monster.GiveEXP(index);
 	cout << m_iGetEXP << "를 얻었습니다.";

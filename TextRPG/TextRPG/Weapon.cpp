@@ -243,6 +243,76 @@ void Weapon::LoadWeapon()
 	m_fLoad.close();
 }
 
+int Weapon::UseSkill(int WEAPONTYPE, int PlayerAtk)
+{
+	char ch;
+	int iRand = Random();
+
+	switch (WEAPONTYPE)
+	{
+	case 1:
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				DrawMidText("속사 발동!! 2연타!!", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 2;
+		}
+		else
+			return PlayerAtk;
+	case 2:
+		if (iRand == 0)
+		{
+			YELLOW
+				DrawMidText("백스텝 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 3;
+		}
+		else
+	return PlayerAtk;	
+	case 3:
+		if (iRand == 0)
+		{
+			YELLOW
+				DrawMidText("더블 탭 발동!! 크리티컬 + 2연타", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 4;
+		}
+		else
+	return PlayerAtk;	
+	case 4:
+		if (iRand == 0)
+		{
+			YELLOW
+				DrawMidText("검기 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 3;
+		}
+		else
+			return PlayerAtk;
+	case 5:
+		if (iRand == 0)
+		{
+			YELLOW
+				DrawMidText("파이어볼 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 6;
+		}
+		else
+	return PlayerAtk;
+	case 6:
+		if (iRand == 0)
+		{
+			YELLOW
+				DrawMidText("지면강타 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 4;
+		}
+		else
+			return PlayerAtk;
+	}
+}
+
 
 Weapon::~Weapon()
 {

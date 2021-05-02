@@ -22,12 +22,21 @@ public:
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void NextPage(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void LoadWeapon();
+	int UseSkill(int WEAPONTYPE, int PlayerAtk);
+	int Random()
+	{
+		int random;
+		srand(time(NULL));
+
+		random = rand() % 4;
+		return random;
+	}
 //	virtual void SkillSet() = 0;
 	Weapon();
 	~Weapon();
 };
 
-class Bow : public Weapon
+class Bow : public Weapon // 속사 : 2연타
 {
 private:
 
@@ -35,35 +44,35 @@ public:
 
 };
 
-class Dagger : public Weapon
+class Dagger : public Weapon // 치명타 : x2 + 주도권
 {
 private:
 
 public:
 };
 
-class Gun : public Weapon
+class Gun : public Weapon // 더블 탭 : 크리 + 2연타
 {
 private:
 
 public:
 };
 
-class Sword : public Weapon
+class Sword : public Weapon // 검기 : 크리티컬 x 3
 {
 private:
 
 public:
 };
 
-class Wand : public Weapon
+class Wand : public Weapon // 보호막 : 1회 방어
 {
 private:
 
 public:
 };
 
-class Hammer : public Weapon
+class Hammer : public Weapon // 지면강타 : 적 1회 기절
 {
 private:
 

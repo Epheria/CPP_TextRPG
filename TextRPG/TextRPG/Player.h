@@ -61,10 +61,16 @@ public:
 	}
 	inline int Attack()
 	{
+		int SkillAtk;
+		int SumAtk;
 		if (m_Inventory.empty())
 			return m_iAttack;
 		else
-			return m_iAttack + m_Inventory[m_iWeaponSelect].m_iAttack;
+		{
+			SumAtk = m_iAttack + m_Inventory[m_iWeaponSelect].m_iAttack;
+			SkillAtk = m_Weapon.UseSkill(m_Inventory[m_iWeaponSelect].m_iWEAPONTYPE, SumAtk);
+			return SkillAtk;
+		}
 	}
 	inline void GetDamage(int Damage)
 	{

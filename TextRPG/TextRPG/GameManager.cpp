@@ -352,7 +352,7 @@ void GameManager::Battle(int index)
 			BLUE
 				BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 			RED
-				gotoxy(WIDTH, HEIGHT - 20);
+				gotoxy(WIDTH - 4, HEIGHT - 20);
 			cout  << strMonsterName << " ½Â¸®!!";
 			ch = _getch();
 			if (m_User.DeathCheck() == true)
@@ -484,7 +484,7 @@ void GameManager::ShowShopMenu()
 void GameManager::GameOver()
 {
 	RED
-	gotoxy(WIDTH, HEIGHT - 17);
+	gotoxy(WIDTH - 4, HEIGHT - 15);
 	cout << "Game Over";
 	char ch = _getch();
 	m_Monster.ResetMonster();
