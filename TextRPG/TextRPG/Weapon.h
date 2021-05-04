@@ -16,11 +16,12 @@ class Weapon : public MapDraw
 private:
 	WeaponStatus m_WeaponStatus;
 public:
-	int WeaponCount(int WEAPONTYPE);
+	virtual void LoadWeapon();
+
+	void StatusLoad(vector<Weapon> WeaponList);
 	int WeaponIndex(int WEAPONTYPE);
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void NextPage(int WEAPONTYPE, Player& User, string WeaponTypeName);
-	void LoadWeapon();
 	int UseSkill(int WEAPONTYPE, int PlayerAtk);
 	int Random()
 	{
@@ -35,48 +36,61 @@ public:
 	~Weapon();
 };
 
+class WeaponManager
+{
+private:
+	Weapon* m_Weapon;
+	vector<Weapon> WeaponList;
+public:
+	int WeaponCount(int WEAPONTYPE);
+	void LoadWeapon();
+
+};
+
 class Bow : public Weapon // 속사 : 2연타
 {
 private:
-	vector<WeaponStatus> BowList;
 public:
-
+	void LoadWeapon()
+	{
+		
+	}
 };
 
 class Dagger : public Weapon // 치명타 : x2 + 주도권
 {
 private:
-	vector<WeaponStatus> DaggerList;
+	void LoadWeapon();
 public:
 };
 
 class Gun : public Weapon // 더블 탭 : 크리 + 2연타
 {
 private:
-	vector<WeaponStatus> GunList;
 public:
+	void LoadWeapon();
 };
 
 class Sword : public Weapon // 검기 : 크리티컬 x 3
 {
 private:
-	vector<WeaponStatus> SwordList;
 
 public:
+	void LoadWeapon();
 };
 
 class Wand : public Weapon // 보호막 : 1회 방어
 {
 private:
-	vector<WeaponStatus> WandList;
 
 public:
+	void LoadWeapon();
 };
 
 class Hammer : public Weapon // 지면강타 : 적 1회 기절
 {
 private:
-	vector<WeaponStatus> HammerList;
 
 public:
+	void LoadWeapon();
 };

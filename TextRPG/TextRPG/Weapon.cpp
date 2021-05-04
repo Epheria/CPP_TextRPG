@@ -6,10 +6,10 @@ Weapon::Weapon()
 	LoadWeapon();
 }
 
-int Weapon::WeaponCount(int WEAPONTYPE)
+int WeaponManager::WeaponCount(int WEAPONTYPE)
 {
 	int iCount = 0;
-	for (vector<WeaponInfo>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
+	for (vector<WeaponStatus>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
 		if (iter->m_iWEAPONTYPE == WEAPONTYPE)
 		{
@@ -22,7 +22,7 @@ int Weapon::WeaponCount(int WEAPONTYPE)
 int Weapon::WeaponIndex(int WEAPONTYPE)
 {
 	int iIndex = 0;
-	for (vector<WeaponInfo>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
+	for (vector<WeaponStatus>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
 		if (iter->m_iWEAPONTYPE == WEAPONTYPE)
 		{
@@ -223,11 +223,15 @@ void Weapon::NextPage(int WEAPONTYPE, Player& User, string WeaponTypeName)
 	}
 }
 
-void Weapon::LoadWeapon()
+void WeaponManager::LoadWeapon()
 {
 	ifstream m_fLoad;
-	WeaponInfo tmp;
+	Weapon tmp;
 	int iMax;
+
+	tmp.StatusLoad(WeaponList);
+
+	WeaponManager
 
 	m_fLoad.open("WeaponList.txt");
 
