@@ -3,20 +3,20 @@
 
 typedef struct Status
 {
-	string m_strMopName;
+	string m_strName;
 	int m_iLevel;
 	int m_iAttack;
 	int m_iHP;
 	int m_iDefaultHP;
-	int m_iEXP;
+	int m_iDefaultEXP;
 	int m_iGetEXP;
 	int m_iGold;
 }Status;
 
 class Character
 {
-private:
-	Status tmp;
+protected:
+	Status m_Status;
 public:
 	virtual inline int Attack() = 0;
 	virtual inline bool DeathCheck();

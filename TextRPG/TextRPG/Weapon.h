@@ -2,20 +2,19 @@
 #include "Macro.h"
 #include "MapDraw.h"
 
-typedef struct WeaponInfo
+typedef struct WeaponStatus
 {
 	int m_iWEAPONTYPE;
 	int m_iPrice;
 	string m_strName;
 	int m_iAttack;
-}WeaponInfo;
+}WeaponStatus;
 
 class Player;
 class Weapon : public MapDraw
 {
 private:
-	vector<WeaponInfo> WeaponList;
-
+	WeaponStatus m_WeaponStatus;
 public:
 	int WeaponCount(int WEAPONTYPE);
 	int WeaponIndex(int WEAPONTYPE);
@@ -39,7 +38,7 @@ public:
 class Bow : public Weapon // 속사 : 2연타
 {
 private:
-
+	vector<WeaponStatus> BowList;
 public:
 
 };
@@ -47,20 +46,21 @@ public:
 class Dagger : public Weapon // 치명타 : x2 + 주도권
 {
 private:
-
+	vector<WeaponStatus> DaggerList;
 public:
 };
 
 class Gun : public Weapon // 더블 탭 : 크리 + 2연타
 {
 private:
-
+	vector<WeaponStatus> GunList;
 public:
 };
 
 class Sword : public Weapon // 검기 : 크리티컬 x 3
 {
 private:
+	vector<WeaponStatus> SwordList;
 
 public:
 };
@@ -68,6 +68,7 @@ public:
 class Wand : public Weapon // 보호막 : 1회 방어
 {
 private:
+	vector<WeaponStatus> WandList;
 
 public:
 };
@@ -75,6 +76,7 @@ public:
 class Hammer : public Weapon // 지면강타 : 적 1회 기절
 {
 private:
+	vector<WeaponStatus> HammerList;
 
 public:
 };

@@ -16,7 +16,7 @@ inline int Character::GetDamage(int HP, int Damage)
 
 inline bool Character::DeathCheck()
 {
-
+	return false;
 }
 
 

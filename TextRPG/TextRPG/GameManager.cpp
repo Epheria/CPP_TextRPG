@@ -285,7 +285,7 @@ void GameManager::Battle(int index)
 		RED
 			DrawMidText("------------------------ vs ----------------------------", WIDTH, HEIGHT - 15);
 		ORIGINAL
-			m_MonsterManager.ShowMonster(index);
+			m_MonsterManager.ShowInfo();
 		MonsterAtk = m_Monster.Attack();
 		
 		input = _getch();
@@ -453,7 +453,7 @@ void GameManager::GameOver()
 	gotoxy(WIDTH - 4, HEIGHT - 15);
 	cout << "Game Over";
 	char ch = _getch();
-	m_Monster.ResetMonster();
+	m_MonsterManager.ResetMonster();
 	m_User.LoadDefaultInfo();
 	m_User.ResetWeapon();
 	m_bGameOver = true;

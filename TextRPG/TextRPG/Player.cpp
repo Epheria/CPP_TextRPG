@@ -2,7 +2,6 @@
 
 Player::Player()
 {
-	m_iDefaultHP = 1000;
 	m_iEXP = 0;
 	m_iWeaponSelect = 0;
 	m_bWeapon = false;
@@ -10,7 +9,7 @@ Player::Player()
 
 void Player::CreateName()
 {
-	cin >> m_strPlayerName;
+	cin >> m_Status.m_strName;
 }
 
 void Player::LoadDefaultInfo()
@@ -20,12 +19,12 @@ void Player::LoadDefaultInfo()
 	m_fLoad.open("DefaultPlayer.txt");
 	if (m_fLoad.is_open())
 	{
-		m_fLoad >> m_iAttack;
-		m_fLoad >> m_iHP;
-		m_fLoad >> m_iDefaultEXP;
-		m_fLoad >> m_iGetEXP;
-		m_fLoad >> m_iLevel;
-		m_fLoad >> m_iGold;
+		m_fLoad >> m_Status.m_iAttack;
+		m_fLoad >> m_Status.m_iHP;
+		m_fLoad >> m_Status.m_iDefaultEXP;
+		m_fLoad >> m_Status.m_iGetEXP;
+		m_fLoad >> m_Status.m_iLevel;
+		m_fLoad >> m_Status.m_iGold;
 	}
 	m_fLoad.close();
 }
@@ -66,13 +65,13 @@ void Player::ShowInfo()
 void Player::PlayerInfo(int iHeight)
 {
 	DrawMidText("===== ", WIDTH - 8, iHeight);
-	cout << m_strPlayerName << "(" << m_iLevel << "Lv)" << " =====" << endl;
+	cout << m_Status.m_strName << "(" << m_Status.m_iLevel << "Lv)" << " =====" << endl;
 	DrawMidText("공격력 = ", WIDTH - 10, iHeight + 1);
-	cout << m_iAttack << "\t" << " 생명력 = " << m_iHP << "/" << m_iDefaultHP << endl;
+	cout << m_Status.m_iAttack << "\t" << " 생명력 = " << m_Status.m_iHP << "/" << m_Status.m_iDefaultHP << endl;
 	DrawMidText("경험치 = ", WIDTH - 10, iHeight + 2);
-	cout << m_iEXP << "/" << m_iDefaultEXP << "\t" << " GetEXP : " << m_iGetEXP << endl;
+	cout << m_iEXP << "/" << m_Status.m_iDefaultEXP << "\t" << " GetEXP : " << m_Status.m_iGetEXP << endl;
 	DrawMidText("Gold = ", WIDTH - 11, iHeight + 3);
-	cout << m_iGold << endl;
+	cout << m_Status.m_iGold << endl;
 }
 
 void Player::ShowInventory()
@@ -134,26 +133,26 @@ void Player::Win(Monster& m_Monster, int index)
 		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
 		gotoxy(WIDTH - 4, HEIGHT - 20);
-	cout << m_strPlayerName << " 승리!!";
+	cout << m_Status.m_strName << " 승리!!";
 	gotoxy(WIDTH - 4, HEIGHT - 17);
-	cout << m_strPlayerName << "가 경험치 ";
-	m_iGetEXP = m_Monster.GiveEXP(index);
-	cout << m_iGetEXP << "를 얻었습니다.";
+	cout << m_Status.m_strName << "가 경험치 ";
+	m_Status.m_iGetEXP = m_Monster.GiveEXP(index);
+	cout << m_Status.m_iGetEXP << "를 얻었습니다.";
 	ch = _getch();
 
 	getGold = m_Monster.GiveGold(index);
-	m_iGold += getGold;
-	m_iEXP += m_iGetEXP;
-	if (m_iEXP >= m_iDefaultEXP)
+	m_Status.m_iGold += getGold;
+	m_iEXP += m_Status.m_iGetEXP;
+	if (m_iEXP >= m_Status.m_iDefaultEXP)
 	{
-		for (int i = 0; m_iEXP >= m_iDefaultEXP; i++)
+		for (int i = 0; m_iEXP >= m_Status.m_iDefaultEXP; i++)
 		{
-			m_iEXP -= m_iDefaultEXP;
+			m_iEXP -= m_Status.m_iDefaultEXP;
 			LevelUP();
 		}
 	}
 
-	m_iGetEXP = 0;
+	m_Status.m_iGetEXP = 0;
 }
 
 void Player::LevelUP()
@@ -167,7 +166,7 @@ void Player::LevelUP()
 		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
 		gotoxy(WIDTH, HEIGHT - 20);
-	cout << m_strPlayerName << "레벨업!!";
+	cout << m_Status.m_strName << "레벨업!!";
 	gotoxy(WIDTH, HEIGHT - 17);
 	GetAtk = 1;
 	GetHP = 10;
@@ -176,11 +175,11 @@ void Player::LevelUP()
 	cout << "생명력 " << GetHP << " 증가!!";
 	ch = _getch();
 
-	m_iLevel++;
-	m_iAttack += GetAtk;
-	m_iDefaultHP += GetHP;
-	m_iHP = m_iDefaultHP;
-	m_iDefaultEXP += 3;
+	m_Status.m_iLevel++;
+	m_Status.m_iAttack += GetAtk;
+	m_Status.m_iDefaultHP += GetHP;
+	m_Status.m_iHP = m_Status.m_iDefaultHP;
+	m_Status.m_iDefaultEXP += 3;
 }
 
 void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
@@ -189,8 +188,8 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 	m_fSave.open(m_FileName[iSelect - 1]);
 	if (m_fSave.is_open())
 	{
-		m_fSave << m_strPlayerName << " " << m_iAttack << " " << m_iHP << " " << m_iDefaultEXP << " "
-			<< m_iGetEXP << " " << m_iLevel << " " << m_iGold << " " << m_iEXP << " " << m_iDefaultHP << endl;
+		m_fSave << m_Status.m_strName << " " << m_Status.m_iAttack << " " << m_Status.m_iHP << " " << m_Status.m_iDefaultEXP << " "
+			<< m_Status.m_iGetEXP << " " << m_Status.m_iLevel << " " << m_Status.m_iGold << " " << m_iEXP << " " << m_Status.m_iDefaultHP << endl;
 		m_fSave << m_Inventory.size() << endl;
 		if (!m_Inventory.empty())
 		{
@@ -214,7 +213,8 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 	char ch;
 	int invenSize;
 	WeaponInfo tmp;
-	m_fLoad >> m_strPlayerName >> m_iAttack >> m_iHP >> m_iDefaultEXP >> m_iGetEXP >> m_iLevel >> m_iGold >> m_iEXP >> m_iDefaultHP;
+	m_fLoad >> m_Status.m_strName >> m_Status.m_iAttack >> m_Status.m_iHP >> 
+		m_Status.m_iDefaultEXP >> m_Status.m_iGetEXP >> m_Status.m_iLevel >> m_Status.m_iGold >> m_iEXP >> m_Status.m_iDefaultHP;
 	m_fLoad >> invenSize;
 	if (invenSize > 0)
 	{

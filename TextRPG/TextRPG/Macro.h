@@ -30,6 +30,7 @@ using namespace std;
 #define HEIGHT 30
 #define START_X 0
 #define START_Y 0
+#define MAX_MONSTER 6;
 
 enum STARTTYPE
 {
