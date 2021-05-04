@@ -1,14 +1,13 @@
 #include "Monster.h"
-
 Monster::Monster()
 {
 }
 
-void Monster::LoadDefaultInfo()
+void MonsterManager::LoadDefaultInfo()
 {
 	int iCount;
 	ifstream m_fLoad;
-	MOP tmp;
+	Status tmp;
 
 	m_fLoad.open("DefaultMonster.txt");
 	if (m_fLoad.is_open())
@@ -25,44 +24,44 @@ void Monster::LoadDefaultInfo()
 	m_fLoad.close();
 }
 
-void Monster::ShowInfo()
+void MonsterManager::ShowInfo()
 {
 	int i = 1;
 	int iHeight = HEIGHT - 29;
 	system("cls");
 	BLUE
-		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	YELLOW
-		for (vector<MOP>::iterator iter = MonsterList.begin(); iter != MonsterList.end(); iter++)
+		for (vector<Status>::iterator iter = MonsterList.begin(); iter != MonsterList.end(); iter++)
 		{
 			iHeight += i;
-			gotoxy(WIDTH - 8, iHeight);
+			DrawManager.gotoxy(WIDTH - 8, iHeight);
 			cout << "===== " << iter->m_strMopName << "(" << iter->m_iLevel << "Lv)" << " =====" << endl;
 			iHeight += i;
-			gotoxy(WIDTH - 12, iHeight);
+			DrawManager.gotoxy(WIDTH - 12, iHeight);
 			cout << "공격력 = " << iter->m_iAttack << "\t" << "생명력 = " << iter->m_iHP << "/" << iter->m_iDefaultHP << endl;
 			iHeight += i;
-			gotoxy(WIDTH - 12, iHeight);
+			DrawManager.gotoxy(WIDTH - 12, iHeight);
 			cout << "경험치 = " << iter->m_iEXP << "/" << iter->m_iEXP << "\t" << "GetEXP : " << iter->m_iGetEXP << endl;
 			iHeight += i;
-			gotoxy(WIDTH - 12, iHeight);
+			DrawManager.gotoxy(WIDTH - 12, iHeight);
 			cout << "Gold = " << iter->m_iGold << endl;
 		}
 }
 
-void Monster::ShowMonster(int index)
+void MonsterManager::ShowMonster(int index)
 {
-	gotoxy(WIDTH - 8, HEIGHT - 5);
+	DrawManager.gotoxy(WIDTH - 8, HEIGHT - 5);
 	cout << "===== " << MonsterList[index].m_strMopName << "(" << MonsterList[index].m_iLevel << "Lv)" << " =====" << endl;
-	gotoxy(WIDTH - 12, HEIGHT - 6);
+	DrawManager.gotoxy(WIDTH - 12, HEIGHT - 6);
 	cout << "공격력 = " << MonsterList[index].m_iAttack << "\t" << "생명력 = " << MonsterList[index].m_iHP << "/" << MonsterList[index].m_iDefaultHP << endl;
-	gotoxy(WIDTH - 12, HEIGHT - 7);
+	DrawManager.gotoxy(WIDTH - 12, HEIGHT - 7);
 	cout << "경험치 = " << MonsterList[index].m_iEXP << "/" << MonsterList[index].m_iEXP << "\t" << "GetEXP : " << MonsterList[index].m_iGetEXP << endl;
-	gotoxy(WIDTH - 12, HEIGHT - 8);
+	DrawManager.gotoxy(WIDTH - 12, HEIGHT - 8);
 	cout << "Gold = " << MonsterList[index].m_iGold << endl;
 }
 
-char Monster::Attack()
+char Monster::AttackRes()
 {
 	char Attack[] = { '1', '2', '3' };
 	int res;

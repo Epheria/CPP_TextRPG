@@ -3,62 +3,64 @@
 #include "MapDraw.h"
 #include "Macro.h"
 
-typedef struct MOP
-{
-	string m_strMopName;
-	int m_iLevel;
-	int m_iAttack;
-	int m_iHP;
-	int m_iDefaultHP;
-	int m_iEXP;
-	int m_iGetEXP;
-	int m_iGold;
-}MOP;
-
-class Monster : public Character, virtual MapDraw
+class Monster : public Character, public MonsterManager
 {
 private:
-	vector<MOP> MonsterList;
+	Status m_MonsterStatus;
 public:
-	void LoadDefaultInfo();
-	void ShowInfo();
-	void ShowMonster(int index);
-	char Attack();
-	inline vector<MOP> GetMonster()
+	char AttackRes();
+
+	inline int Attack()
 	{
-		return MonsterList;
-	}
-	inline int DealDamage(int index)
-	{
-		return MonsterList[index].m_iAttack;
+		return m_MonsterStatus.m_iAttack;
 	}
 	inline int GiveEXP(int index)
 	{
-		return MonsterList[index].m_iEXP;
+		return m_MonsterStatus.m_iEXP;
 	}
 	inline int GiveGold(int index)
 	{
-		return MonsterList[index].m_iGold;
-	}
-	inline void GetDamage(int index, int damage)
-	{
-		MonsterList[index].m_iHP -= damage;
+		return m_MonsterStatus.m_iGold;
 	}
 	inline bool DeathCheck(int index)
 	{
-		if (MonsterList[index].m_iHP <= 0)
+		if (m_MonsterStatus.m_iHP <= 0)
 			return true;
 		else
 			return false;
 	}
+	inline string GetName(int index)
+	{
+		return m_MonsterStatus.m_strMopName;
+	}
+	Monster();
+	~Monster();
+};
+
+class MonsterManager
+{
+private:
+	Monster m_Monster;
+	vector<Status> MonsterList;
+	MapDraw DrawManager;
+
+public:
+	void ShowInfo();	
+	void LoadDefaultInfo();
+	void ShowMonster(int index);
+
 	inline void ResetMonster()
 	{
 		MonsterList.clear();
 	}
-	inline string GetName(int index)
+	inline vector<Status> GetMonster()
 	{
-		return MonsterList[index].m_strMopName;
+		return MonsterList;
 	}
-	Monster();
-	~Monster();
+	MonsterManager()
+	{
+	}
+	~MonsterManager()
+	{
+	}
 };

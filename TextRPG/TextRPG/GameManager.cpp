@@ -43,7 +43,7 @@ void GameManager::NewGame()
 	DrawMidText("Player 이름 입력 : ", WIDTH, HEIGHT / 2);
 	m_User.CreateName();
 	m_User.LoadDefaultInfo();
-	m_Monster.LoadDefaultInfo();
+	m_MonsterManager.LoadDefaultInfo();
 	ShowGameMenu();
 }
 
@@ -149,7 +149,8 @@ void GameManager::LoadCheck(ifstream& m_fLoad, int iSelect)
 	{
 		m_bGameOver = false;
 		m_User.Load(m_fLoad, iSelect);
-		m_Monster.LoadDefaultInfo();
+		m_MonsterManager.LoadDefaultInfo();
+		
 		ShowGameMenu();
 	}
 }
@@ -184,7 +185,7 @@ void GameManager::ShowGameMenu()
 			m_User.ShowInfo();
 			break;
 		case 3:
-			m_Monster.ShowInfo();
+			m_MonsterManager.ShowInfo();
 			ch = _getch();
 			break;
 		case 4:
@@ -194,7 +195,7 @@ void GameManager::ShowGameMenu()
 			SaveGame();
 			break;
 		case 6:
-			m_Monster.ResetMonster();
+			m_MonsterManager.ResetMonster();
 			m_User.LoadDefaultInfo();
 			m_User.ResetWeapon();
 			return;
@@ -284,7 +285,7 @@ void GameManager::Battle(int index)
 		RED
 			DrawMidText("------------------------ vs ----------------------------", WIDTH, HEIGHT - 15);
 		ORIGINAL
-			m_Monster.ShowMonster(index);
+			m_MonsterManager.ShowMonster(index);
 		MonsterAtk = m_Monster.Attack();
 		
 		input = _getch();
@@ -297,8 +298,8 @@ void GameManager::Battle(int index)
 			if (m_Monster.DeathCheck(index) == true)
 			{
 				m_User.Win(m_Monster, index);
-				m_Monster.ResetMonster();
-				m_Monster.LoadDefaultInfo();
+				m_MonsterManager.ResetMonster();
+				m_MonsterManager.LoadDefaultInfo();
 				return;
 			}
 			else
@@ -312,7 +313,7 @@ void GameManager::Battle(int index)
 			if (MonsterAtk == input)
 				continue;
 
-			m_User.GetDamage(m_Monster.DealDamage(index));
+			m_User.GetDamage(m_Monster.Attack());
 			system("cls");
 			BLUE
 				BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
