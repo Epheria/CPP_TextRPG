@@ -1,7 +1,14 @@
 #pragma once
 #include "Macro.h"
 #include "MapDraw.h"
+/*
+상점 구현
+: 메뉴 선택을 if 문으로 만들고 iSelect 개수만큼 더하면 1개든 2개든 3개든 4개든 5개든 그에 맞게 메뉴가 구현이 가능하다.
 
+weapon 자식들을 부모의 load로 불러와서
+자식의 포인터를 업캐스팅해서 -> WeaponManager 의 리스트에 저장하면된다.
+그리고 자식들의 스킬은 오버라이딩해서 다 따로 따로 구현 해주면 된다.
+*/
 typedef struct WeaponStatus
 {
 	int m_iWEAPONTYPE;
