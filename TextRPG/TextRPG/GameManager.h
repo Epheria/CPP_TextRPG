@@ -11,7 +11,7 @@ private:
 	Player m_User;
 	Monster m_Monster;
 	MonsterManager m_MonsterManager;
-	Weapon m_Weapon;
+	WeaponManager m_WeaponManager;
 	bool m_bGameOver;
 	string m_FileName[10] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
 ,"SavePlayer9.txt" ,"SavePlayer10.txt" }; 

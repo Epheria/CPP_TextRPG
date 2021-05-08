@@ -7,10 +7,11 @@
 class Player : public Character, public Weapon
 {
 private:
+	MapDraw m_DrawManager;
 	int m_iEXP;
 	int m_iWeaponSelect;
 	bool m_bWeapon;
-	vector<WeaponInfo> m_Inventory;
+	vector<Weapon> m_Inventory;
 	Weapon m_Weapon;
 
 public:
@@ -33,13 +34,12 @@ public:
 	{
 		m_Status.m_iGold -= iPrice;
 	}
-	inline void EquipWeapon(vector<WeaponInfo> WeaponList, int index)
+	inline void EquipWeapon(vector<Weapon*> WeaponList, int index)
 	{
-		WeaponInfo tmp;
-		tmp.m_iAttack = WeaponList[index].m_iAttack;
-		tmp.m_iPrice = WeaponList[index].m_iPrice;
-		tmp.m_iWEAPONTYPE = WeaponList[index].m_iWEAPONTYPE;
-		tmp.m_strName = WeaponList[index].m_strName;
+		WeaponList[index]->m_WeaponStatus.m_iAttack;
+		Weapon tmp;
+
+		tmp.m_WeaponStatus.m_iAttack;
 		
 		m_Inventory.push_back(tmp);
 		m_bWeapon = true;
@@ -51,19 +51,19 @@ public:
 		else
 			return false;
 	}
-	inline int Attack()
-	{
-		int SkillAtk;
-		int SumAtk;
-		if (m_Inventory.empty())
-			return m_Status.m_iAttack;
-		else
-		{
-			SumAtk = m_Status.m_iAttack + m_Inventory[m_iWeaponSelect].m_iAttack;
-			SkillAtk = m_Weapon.UseSkill(m_Inventory[m_iWeaponSelect].m_iWEAPONTYPE, SumAtk);
-			return SkillAtk;
-		}
-	}
+	//inline int Attack()
+	//{
+	//	int SkillAtk;
+	//	int SumAtk;
+	//	if (m_Inventory.empty())
+	//		return m_Status.m_iAttack;
+	//	else
+	//	{
+	//		SumAtk = m_Status.m_iAttack + m_Inventory[m_iWeaponSelect].m_iAttack;
+	//		SkillAtk = m_Weapon.UseSkill(m_Inventory[m_iWeaponSelect].m_iWEAPONTYPE, SumAtk);
+	//		return SkillAtk;
+	//	}
+	//}
 	inline void GetDamage(int Damage)
 	{
 		m_Status.m_iHP -= Damage;

@@ -37,19 +37,19 @@ void Player::ShowInfo()
 	{
 		system("cls");
 		BLUE
-			BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+			m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 		YELLOW
 		PlayerInfo(iHeight);
 		if (m_bWeapon == true)
 		{
-			DrawMidText("무기타입 : ", WIDTH - 22, HEIGHT / 2);
+			m_DrawManager.DrawMidText("무기타입 : ", WIDTH - 22, HEIGHT / 2);
 			ShowWeaponType(m_Inventory[m_iWeaponSelect].m_iWEAPONTYPE);
 			cout << " 무기이름 : " << m_Inventory[m_iWeaponSelect].m_strName << "  공격력 : " << m_Inventory[m_iWeaponSelect].m_iAttack;
 		}
 		ORIGINAL
-			DrawMidText("인벤토리", WIDTH, HEIGHT / 2 + 3);
-		DrawMidText("나가기", WIDTH, HEIGHT / 2 + 6);
-		iSelect = MenuSelectCursor(2, 3, WIDTH / 4, HEIGHT / 2 + 3);
+			m_DrawManager.DrawMidText("인벤토리", WIDTH, HEIGHT / 2 + 3);
+		m_DrawManager.DrawMidText("나가기", WIDTH, HEIGHT / 2 + 6);
+		iSelect = m_DrawManager.MenuSelectCursor(2, 3, WIDTH / 4, HEIGHT / 2 + 3);
 
 		switch (iSelect)
 		{
@@ -64,13 +64,13 @@ void Player::ShowInfo()
 
 void Player::PlayerInfo(int iHeight)
 {
-	DrawMidText("===== ", WIDTH - 8, iHeight);
+	m_DrawManager.DrawMidText("===== ", WIDTH - 8, iHeight);
 	cout << m_Status.m_strName << "(" << m_Status.m_iLevel << "Lv)" << " =====" << endl;
-	DrawMidText("공격력 = ", WIDTH - 10, iHeight + 1);
+	m_DrawManager.DrawMidText("공격력 = ", WIDTH - 10, iHeight + 1);
 	cout << m_Status.m_iAttack << "\t" << " 생명력 = " << m_Status.m_iHP << "/" << m_Status.m_iDefaultHP << endl;
-	DrawMidText("경험치 = ", WIDTH - 10, iHeight + 2);
+	m_DrawManager.DrawMidText("경험치 = ", WIDTH - 10, iHeight + 2);
 	cout << m_iEXP << "/" << m_Status.m_iDefaultEXP << "\t" << " GetEXP : " << m_Status.m_iGetEXP << endl;
-	DrawMidText("Gold = ", WIDTH - 11, iHeight + 3);
+	m_DrawManager.DrawMidText("Gold = ", WIDTH - 11, iHeight + 3);
 	cout << m_Status.m_iGold << endl;
 }
 
@@ -84,17 +84,17 @@ void Player::ShowInventory()
 	system("cls");
 	int iHeight = HEIGHT - 30;
 	BLUE
-		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	ORIGINAL
-		DrawMidText("§§§ Inventory §§§", WIDTH, iHeight);
+		m_DrawManager.DrawMidText("§§§ Inventory §§§", WIDTH, iHeight);
 	YELLOW
 		for (vector<WeaponInfo>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
 		{
 			iHeight += n;
-			gotoxy(WIDTH - 8, iHeight);
+			m_DrawManager.gotoxy(WIDTH - 8, iHeight);
 			cout << iter->m_strName;
 		}
-	iSelect = MenuSelectCursor(m_Inventory.size(), 2, WIDTH / 4, HEIGHT - 28);
+	iSelect = m_DrawManager.MenuSelectCursor(m_Inventory.size(), 2, WIDTH / 4, HEIGHT - 28);
 	m_iWeaponSelect = iSelect - 1;
 	m_bWeapon = true;
 }
@@ -130,11 +130,11 @@ void Player::Win(Monster& m_Monster, int index)
 	int getGold;
 	system("cls");
 	BLUE
-		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
-		gotoxy(WIDTH - 4, HEIGHT - 20);
+		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT - 20);
 	cout << m_Status.m_strName << " 승리!!";
-	gotoxy(WIDTH - 4, HEIGHT - 17);
+	m_DrawManager.gotoxy(WIDTH - 4, HEIGHT - 17);
 	cout << m_Status.m_strName << "가 경험치 ";
 	m_Status.m_iGetEXP = m_Monster.GiveEXP(index);
 	cout << m_Status.m_iGetEXP << "를 얻었습니다.";
@@ -163,15 +163,15 @@ void Player::LevelUP()
 
 	system("cls");
 	BLUE
-		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
-		gotoxy(WIDTH, HEIGHT - 20);
+		m_DrawManager.gotoxy(WIDTH, HEIGHT - 20);
 	cout << m_Status.m_strName << "레벨업!!";
-	gotoxy(WIDTH, HEIGHT - 17);
+	m_DrawManager.gotoxy(WIDTH, HEIGHT - 17);
 	GetAtk = 1;
 	GetHP = 10;
 	cout << "공격력 " << GetAtk << " 증가!!";
-	gotoxy(WIDTH, HEIGHT - 14);
+	m_DrawManager.gotoxy(WIDTH, HEIGHT - 14);
 	cout << "생명력 " << GetHP << " 증가!!";
 	ch = _getch();
 
@@ -201,9 +201,9 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 	}
 	system("cls");
 	BLUE
-		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	ORIGINAL
-		gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
+		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
 	cout << "Save 완료";
 	ch = _getch();
 }
@@ -226,9 +226,9 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 	}
 	system("cls");
 	BLUE
-		BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	ORIGINAL
-		gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
+		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
 	cout << "Load 완료";
 	ch = _getch();
 }
