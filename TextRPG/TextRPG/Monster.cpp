@@ -66,6 +66,11 @@ void MonsterManager::ShowInfo()
 	}
 }
 
+void MonsterManager::BattleInfo(int index)
+{
+	vector<Monster*>::iterator iter;
+}
+
 Monster::~Monster()
 {
 }

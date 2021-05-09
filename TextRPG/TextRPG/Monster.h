@@ -46,6 +46,7 @@ private:
 	MapDraw DrawManager;
 
 public:
+	void BattleInfo(int index);
 	void ShowInfo();	
 	void LoadDefaultInfo();
 
@@ -56,6 +57,11 @@ public:
 	inline vector<Monster> GetMonster()
 	{
 		return MonsterList;
+	}
+	void GetDamage(int index)
+	{
+		int iDamage;
+		iDamage = MonsterList[index].GetDamage()
 	}
 	MonsterManager()
 	{

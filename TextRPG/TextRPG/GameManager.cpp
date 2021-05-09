@@ -285,8 +285,8 @@ void GameManager::Battle(int index)
 		RED
 			DrawMidText("------------------------ vs ----------------------------", WIDTH, HEIGHT - 15);
 		ORIGINAL
-			m_MonsterManager.ShowInfo();
-		MonsterAtk = m_Monster.Attack();
+			m_MonsterManager.BattleInfo(index);
+		MonsterAtk = m_Monster.AttackRes();
 		
 		input = _getch();
 		if (input != '1' && input != '2' && input != '3')
@@ -294,7 +294,7 @@ void GameManager::Battle(int index)
 		flag = WinnerCheck(MonsterAtk, input, index);
 		if (flag == true)
 		{
-			m_Monster.GetDamage(index, m_User.Attack());
+			m_Monster.GetDamage(1, m_User.Attack());
 			if (m_Monster.DeathCheck(index) == true)
 			{
 				m_User.Win(m_Monster, index);
@@ -403,6 +403,7 @@ void GameManager::PrintAttack(char ch)
 
 void GameManager::ShowShopMenu()
 {
+	m_WeaponManager.LoadAllWeapon(m_Weapon);
 	int iSelect;
 
 	while (1)

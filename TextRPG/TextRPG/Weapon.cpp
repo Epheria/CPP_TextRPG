@@ -11,12 +11,14 @@ vector<Weapon*> Weapon::LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, W
 	ifstream m_fLoad;
 	int iMax;
 	WeaponStatus sTmp;
+
 	m_fLoad.open("WeaponList.txt");
 	if (m_fLoad.is_open())
 	{
 		m_fLoad >> iMax;
 		for (int i = 0, j =0; i < iMax; i++, j++)
 		{
+			tmp = new Weapon;
 			m_fLoad >> sTmp.m_iWEAPONTYPE;
 			m_fLoad >> sTmp.m_strName >> sTmp.m_iAttack >> sTmp.m_iPrice;
 			if (WEAPONTYPE == sTmp.m_iWEAPONTYPE)
@@ -27,6 +29,7 @@ vector<Weapon*> Weapon::LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, W
 		}
 	}
 	m_fLoad.close();
+	delete tmp;
 
 	return WeaponList;
 }
@@ -50,14 +53,12 @@ void WeaponManager::LoadAllWeapon(Weapon m_Weapon)
 	Wand m_Wand;
 	Hammer m_Hammer;
 
-	WeaponList = m_Bow.LoadWeapon(BOW, WeaponList, &m_Bow);
+	WeaponList = m_Weapon.LoadWeapon(BOW, WeaponList, &m_Bow);
 	WeaponList = m_Weapon.LoadWeapon(DAGGER, WeaponList, &m_Dagger);
 	WeaponList = m_Weapon.LoadWeapon(GUN, WeaponList, &m_Gun);
 	WeaponList = m_Weapon.LoadWeapon(SWORD, WeaponList, &m_Sword);
 	WeaponList = m_Weapon.LoadWeapon(WAND, WeaponList, &m_Wand);
 	WeaponList = m_Weapon.LoadWeapon(HAMMER, WeaponList, &m_Hammer);
-
-	WeaponList[1]->ShowWeapon(2, 0, "Bow");
 }
 
 int WeaponManager::WeaponCount(int WEAPONTYPE)
@@ -89,8 +90,6 @@ int WeaponManager::WeaponIndex(int WEAPONTYPE)
 
 void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName)
 {
-	Weapon tmp;
-	LoadAllWeapon(tmp);
 	int iSelect;
 	int n = 2;
 	int iGold;
@@ -116,8 +115,12 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 		{
 			if (i > 4)
 				break;
-			WeaponList[i]->ShowWeapon(n, iHeight, WeaponTypeName);
-			iIndex++;
+			if (WeaponList[iIndex]->GetWeaponType() == WEAPONTYPE)
+			{
+				WeaponList[iIndex]->ShowWeapon(n, iHeight, WeaponTypeName);
+				iHeight += n + 1;
+				iIndex++;
+			}
 		}
 		ORIGINAL
 			iHeight += n;
@@ -148,32 +151,10 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 			else if (iSelect == iMax + 3)
 				return;
 		}
-		else if(iMax == 5)
-		{
-			iSelect = m_DrawManager.MenuSelectCursor(8, 3, WIDTH / 4, HEIGHT - 26);
-			if (iSelect <= iMax)
-			{
-				iIndex_s = iIndex_s - 1 + iSelect;
-				if (iGold < WeaponList[iIndex_s]->GetPrice())
-					continue;
-				else
-				{
-					User.BuyWeapon(WeaponList[iIndex_s]->GetPrice());
-					User.EquipWeapon(WeaponList, iIndex_s);
-				}
-				continue;
-			}
-			else if (iSelect == iMax + 1)
-				continue;
-			else if (iSelect == iMax + 2)
-				continue;
-			else if (iSelect == iMax + 3)
-				return;
-		}
 		else // 5이상일때
 		{
 			iSelect = m_DrawManager.MenuSelectCursor(8, 3, WIDTH / 4, HEIGHT - 26);
-			if (iSelect <= iMax)
+			if (iSelect <= 5)
 			{
 				iIndex_s = iIndex_s - 1 + iSelect;
 				if (iGold < WeaponList[iIndex_s]->GetPrice())
@@ -185,16 +166,21 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 				}
 				continue;
 			}
-			else if (iSelect == iMax + 1)
-				continue;
-			else if (iSelect == iMax + 2)
+			else if (iSelect == 5 + 1)
 			{
-				iMax -= 5;
-				iIndex += 5;
+				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName);
+				return;
+			}
+			else if (iSelect == 5 + 2)
+			{
+				if (iMax > 5)
+				{
+					iMax -= 5;
+				}
 				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName, iMax, iIndex);
 				return;
 			}
-			else if (iSelect == iMax + 3)
+			else if (iSelect == 5 + 3)
 				return;
 		}
 	}
@@ -202,15 +188,15 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 
 void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName, int iMax, int iIndex)
 {
-	int iSelect;
+	int iSelect, iCur = 0;
 	int n = 2;
 	int iGold;
+	int iIndex_s = iIndex;
 
 	while (1)
 	{
 		system("cls");
 		int iHeight = HEIGHT - 30;
-		int iIndex_s = iIndex;
 		iGold = User.GetGold();
 		BLUE
 			m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
@@ -225,8 +211,13 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 			{
 				if (i > 4)
 					break;
-				WeaponList[i]->ShowWeapon(n, iHeight, WeaponTypeName);
-				iIndex++;
+				if (WeaponList[iIndex]->GetWeaponType() == WEAPONTYPE)
+				{
+					WeaponList[iIndex]->ShowWeapon(n, iHeight, WeaponTypeName);
+					iHeight += n + 1;
+					iIndex++;
+					iCur++;
+				}
 			}
 		ORIGINAL
 			iHeight += n;
@@ -237,6 +228,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 		m_DrawManager.DrawMidText("나가기", WIDTH, iHeight);
 		if (iMax <= 5)
 		{
+			iIndex -= iCur;
 			iSelect = m_DrawManager.MenuSelectCursor(iMax + 3, 3, WIDTH / 4, HEIGHT - 26);
 			if (iSelect <= iMax)
 			{
@@ -251,29 +243,10 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 				continue;
 			}
 			else if (iSelect == iMax + 1)
-				continue;
-			else if (iSelect == iMax + 2)
-				continue;
-			else if (iSelect == iMax + 3)
-				return;
-		}
-		else if (iMax == 5)
-		{
-			iSelect = m_DrawManager.MenuSelectCursor(8, 3, WIDTH / 4, HEIGHT - 26);
-			if (iSelect <= iMax)
 			{
-				iIndex_s = iIndex_s - 1 + iSelect;
-				if (iGold < WeaponList[iIndex_s]->GetPrice())
-					continue;
-				else
-				{
-					User.BuyWeapon(WeaponList[iIndex_s]->GetPrice());
-					User.EquipWeapon(WeaponList, iIndex_s);
-				}
-				continue;
+				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName);
+				return;
 			}
-			else if (iSelect == iMax + 1)
-				continue;
 			else if (iSelect == iMax + 2)
 				continue;
 			else if (iSelect == iMax + 3)
@@ -282,7 +255,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 		else // 5이상일때
 		{
 			iSelect = m_DrawManager.MenuSelectCursor(8, 3, WIDTH / 4, HEIGHT - 26);
-			if (iSelect <= iMax)
+			if (iSelect <= 5)
 			{
 				iIndex_s = iIndex_s - 1 + iSelect;
 				if (iGold < WeaponList[iIndex_s]->GetPrice())
@@ -294,16 +267,22 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 				}
 				continue;
 			}
-			else if (iSelect == iMax + 1)
-				continue;
-			else if (iSelect == iMax + 2)
+			else if (iSelect == 5 + 1)
 			{
-				iMax -= 5;
-				iIndex += 5;
-				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName, iMax, iIndex);
+				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName);
 				return;
 			}
-			else if (iSelect == iMax + 3)
+			else if (iSelect == 5 + 2)
+			{
+				if (iMax > 5)
+				{
+					iMax -= 5;
+				}
+				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName, iMax, iIndex);
+
+				return;
+			}
+			else if (iSelect == 5 + 3)
 				return;
 		}
 	}
