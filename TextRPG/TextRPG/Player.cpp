@@ -196,7 +196,7 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 		{
 			for (vector<Weapon*>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
 			{
-				m_fSave << (*iter)->GetWeaponType(iter) << " " << (*iter)->GetName() << " " << (*iter)->GetAttack() << " " << (*iter)->GetPrice() << endl;
+				m_fSave << (*iter)->GetWeaponType() << " " << (*iter)->GetName() << " " << (*iter)->GetAttack() << " " << (*iter)->GetPrice() << endl;
 			}
 		}
 	}
@@ -237,7 +237,6 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
 	cout << "Load ¿Ï·á";
 	ch = _getch();
-	delete wTmp;
 }
 
 int Player::Attack()

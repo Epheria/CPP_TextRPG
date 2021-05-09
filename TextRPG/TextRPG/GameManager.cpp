@@ -3,6 +3,12 @@
 GameManager::GameManager()
 {
 	m_bGameOver = false;
+	char buf[20];
+	for (int i = 0; i < 10; i++)
+	{
+		sprintf(buf, "SavePlayer%d.txt", i + 1);
+		m_FileName[i] = buf;
+	}
 }
 
 void GameManager::ShowStartMenu()

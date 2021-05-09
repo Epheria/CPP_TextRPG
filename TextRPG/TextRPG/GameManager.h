@@ -14,8 +14,7 @@ private:
 	WeaponManager m_WeaponManager;
 	Weapon m_Weapon;
 	bool m_bGameOver;
-	string m_FileName[10] = { "SavePlayer1.txt", "SavePlayer2.txt", "SavePlayer3.txt", "SavePlayer4.txt","SavePlayer5.txt", "SavePlayer6.txt","SavePlayer7.txt","SavePlayer8.txt"
-,"SavePlayer9.txt" ,"SavePlayer10.txt" }; 
+	string m_FileName[10];
 
 public:
 	void ShowStartMenu();
