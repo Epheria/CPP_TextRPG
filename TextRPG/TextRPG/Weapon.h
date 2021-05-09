@@ -24,8 +24,12 @@ private:
 	MapDraw m_DrawManager;
 	WeaponStatus m_WeaponStatus;
 public:
-	void LoadWeapon(int WEAPONTYPE, vector<Weapon*>& WeaponList, Weapon* tmp);
-	//int UseSkill(int WEAPONTYPE, int PlayerAtk);
+	vector<Weapon*> LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, Weapon* tmp);
+	void ShowWeapon(int i, int iHeight, string WeaponTypeName);
+	virtual int UseSkill(int PlayerAtk)
+	{
+		return PlayerAtk;
+	}
 	int Random()
 	{
 		int random;
@@ -33,6 +37,10 @@ public:
 
 		random = rand() % 4;
 		return random;
+	}
+	int GetWeaponType(vector<Weapon*>::iterator iter)
+	{
+		return (*iter)->m_WeaponStatus.m_iWEAPONTYPE;
 	}
 	int GetWeaponType()
 	{
@@ -42,8 +50,22 @@ public:
 	{
 		return m_WeaponStatus.m_iPrice;
 	}
-	void ShowWeapon(int i, int iHeight, string WeaponTypeName);
-//	virtual void SkillSet() = 0;
+	int GetAttack()
+	{
+		return m_WeaponStatus.m_iAttack;
+	}
+	string GetName()
+	{
+		return m_WeaponStatus.m_strName;
+	}
+	void SetWeapon(WeaponStatus tmp) 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄
+	{
+		m_WeaponStatus.m_iAttack = tmp.m_iAttack;
+		m_WeaponStatus.m_iPrice = tmp.m_iPrice;
+		m_WeaponStatus.m_iWEAPONTYPE = tmp.m_iWEAPONTYPE;
+		m_WeaponStatus.m_strName = tmp.m_strName;
+	}
+
 	Weapon();
 	~Weapon();
 };
@@ -53,51 +75,124 @@ class WeaponManager
 private:
 	MapDraw m_DrawManager;
 	vector<Weapon*> WeaponList;
-
 public:
-	void LoadAllWeapon();
+	void LoadAllWeapon(Weapon m_Weapon);
 	int WeaponCount(int WEAPONTYPE);
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName, int iMax, int iIndex);
 	int WeaponIndex(int WEAPONTYPE);
 };
 
-class Bow : public Weapon // 속사 : 2연타
+class Bow : public Weapon
 {
 private:
+	MapDraw m_DrawManager;
 public:
-
+	int UseSkill(int WEAPONTYPE, int PlayerAtk)
+	{
+		char ch;
+		int iRand = Random();
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				m_DrawManager.DrawMidText("속사 발동!! 2연타!!", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 2;
+		}
+	}
 };
 
-class Dagger : public Weapon // 치명타 : x2 + 주도권
+class Dagger : public Weapon
 {
 private:
+	MapDraw m_DrawManager;
 public:
+	int UseSkill(int PlayerAtk)
+	{
+		char ch;
+		int iRand = Random();
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				m_DrawManager.DrawMidText("급소찌르기 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 3;
+		}
+	}
 };
 
-class Gun : public Weapon // 더블 탭 : 크리 + 2연타
+class Gun : public Weapon
 {
 private:
+	MapDraw m_DrawManager;
 public:
+	int UseSkill(int PlayerAtk)
+	{
+		char ch;
+		int iRand = Random();
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				m_DrawManager.DrawMidText("더블 탭 발동!! 크리티컬 + 2연타", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 4;
+		}
+	}
 };
 
-class Sword : public Weapon // 검기 : 크리티컬 x 3
+class Sword : public Weapon
 {
 private:
-
+	MapDraw m_DrawManager;
 public:
+	int UseSkill(int PlayerAtk)
+	{
+		char ch;
+		int iRand = Random();
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				m_DrawManager.DrawMidText("검기 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 3;
+		}
+	}
 };
 
-class Wand : public Weapon // 보호막 : 1회 방어
+class Wand : public Weapon
 {
 private:
-
+	MapDraw m_DrawManager;
 public:
+	int UseSkill(int PlayerAtk)
+	{
+		char ch;
+		int iRand = Random();
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				m_DrawManager.DrawMidText("파이어볼 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 6;
+		}
+	}
 };
 
-class Hammer : public Weapon // 지면강타 : 적 1회 기절
+class Hammer : public Weapon 
 {
 private:
-
+	MapDraw m_DrawManager;
 public:
+	int UseSkill(int PlayerAtk)
+	{
+		char ch;
+		int iRand = Random();
+		if (iRand == 0 || iRand == 1)
+		{
+			YELLOW
+				m_DrawManager.DrawMidText("지면강타 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
+			ch = _getch();
+			return PlayerAtk * 4;
+		}
+	}
 };

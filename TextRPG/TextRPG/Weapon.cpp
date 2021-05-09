@@ -3,29 +3,32 @@
 
 Weapon::Weapon()
 {
-
+	
 }
 
-void Weapon::LoadWeapon(int WEAPONTYPE, vector<Weapon*>& WeaponList, Weapon* tmp)
+vector<Weapon*> Weapon::LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, Weapon* tmp)
 {
 	ifstream m_fLoad;
 	int iMax;
-
+	WeaponStatus sTmp;
 	m_fLoad.open("WeaponList.txt");
 	if (m_fLoad.is_open())
 	{
 		m_fLoad >> iMax;
-		for (int i = 0; i < iMax; i++)
+		for (int i = 0, j =0; i < iMax; i++, j++)
 		{
-			m_fLoad >> tmp->m_WeaponStatus.m_iWEAPONTYPE;
-			if (WEAPONTYPE == tmp->m_WeaponStatus.m_iWEAPONTYPE)
+			m_fLoad >> sTmp.m_iWEAPONTYPE;
+			m_fLoad >> sTmp.m_strName >> sTmp.m_iAttack >> sTmp.m_iPrice;
+			if (WEAPONTYPE == sTmp.m_iWEAPONTYPE)
 			{
-				m_fLoad >> tmp->m_WeaponStatus.m_strName >> tmp->m_WeaponStatus.m_iAttack >> tmp->m_WeaponStatus.m_iPrice;
+				tmp->SetWeapon(sTmp);
 				WeaponList.push_back(tmp);
 			}
 		}
 	}
 	m_fLoad.close();
+
+	return WeaponList;
 }
 
 void Weapon::ShowWeapon(int i, int iHeight, string WeaponTypeName)
@@ -38,77 +41,7 @@ void Weapon::ShowWeapon(int i, int iHeight, string WeaponTypeName)
 	cout << "무기이름 : " << m_WeaponStatus.m_strName << "  공격력 : " << m_WeaponStatus.m_iAttack;
 }
 
-//int Weapon::UseSkill(int WEAPONTYPE, int PlayerAtk)
-//{
-//	char ch;
-//	int iRand = Random();
-//
-//	switch (WEAPONTYPE)
-//	{
-//	case 1:
-//		if (iRand == 0 || iRand == 1)
-//		{
-//			YELLOW
-//				DrawMidText("속사 발동!! 2연타!!", WIDTH, HEIGHT - 18);
-//			ch = _getch();
-//			return PlayerAtk * 2;
-//		}
-//		else
-//			return PlayerAtk;
-//	case 2:
-//		if (iRand == 0)
-//		{
-//			YELLOW
-//				DrawMidText("급소찌르기 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
-//			ch = _getch();
-//			return PlayerAtk * 3;
-//		}
-//		else
-//			return PlayerAtk;
-//	case 3:
-//		if (iRand == 0)
-//		{
-//			YELLOW
-//				DrawMidText("더블 탭 발동!! 크리티컬 + 2연타", WIDTH, HEIGHT - 18);
-//			ch = _getch();
-//			return PlayerAtk * 4;
-//		}
-//		else
-//			return PlayerAtk;
-//	case 4:
-//		if (iRand == 0)
-//		{
-//			YELLOW
-//				DrawMidText("검기 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
-//			ch = _getch();
-//			return PlayerAtk * 3;
-//		}
-//		else
-//			return PlayerAtk;
-//	case 5:
-//		if (iRand == 0)
-//		{
-//			YELLOW
-//				DrawMidText("파이어볼 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
-//			ch = _getch();
-//			return PlayerAtk * 6;
-//		}
-//		else
-//			return PlayerAtk;
-//	case 6:
-//		if (iRand == 0)
-//		{
-//			YELLOW
-//				DrawMidText("지면강타 발동!! 크리티컬 데미지", WIDTH, HEIGHT - 18);
-//			ch = _getch();
-//			return PlayerAtk * 4;
-//		}
-//		else
-//			return PlayerAtk;
-//	}
-//}
-
-void WeaponManager::LoadAllWeapon()
+void WeaponManager::LoadAllWeapon(Weapon m_Weapon)
 {
 	Bow m_Bow;
 	Dagger m_Dagger;
@@ -117,12 +50,14 @@ void WeaponManager::LoadAllWeapon()
 	Wand m_Wand;
 	Hammer m_Hammer;
 
-	m_Bow.LoadWeapon(BOW, WeaponList, &m_Bow);
-	m_Dagger.LoadWeapon(DAGGER, WeaponList, &m_Dagger);
-	m_Gun.LoadWeapon(DAGGER, WeaponList, &m_Gun);
-	m_Sword.LoadWeapon(DAGGER, WeaponList, &m_Sword);
-	m_Wand.LoadWeapon(DAGGER, WeaponList, &m_Wand);
-	m_Hammer.LoadWeapon(DAGGER, WeaponList, &m_Hammer);
+	WeaponList = m_Bow.LoadWeapon(BOW, WeaponList, &m_Bow);
+	WeaponList = m_Weapon.LoadWeapon(DAGGER, WeaponList, &m_Dagger);
+	WeaponList = m_Weapon.LoadWeapon(GUN, WeaponList, &m_Gun);
+	WeaponList = m_Weapon.LoadWeapon(SWORD, WeaponList, &m_Sword);
+	WeaponList = m_Weapon.LoadWeapon(WAND, WeaponList, &m_Wand);
+	WeaponList = m_Weapon.LoadWeapon(HAMMER, WeaponList, &m_Hammer);
+
+	WeaponList[1]->ShowWeapon(2, 0, "Bow");
 }
 
 int WeaponManager::WeaponCount(int WEAPONTYPE)
@@ -130,7 +65,7 @@ int WeaponManager::WeaponCount(int WEAPONTYPE)
 	int iCount = 0;
 	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
-		if ((*iter)->GetWeaponType() == WEAPONTYPE)
+		if ((*iter)->GetWeaponType(iter) == WEAPONTYPE)
 		{
 			iCount++;
 		}
@@ -143,7 +78,7 @@ int WeaponManager::WeaponIndex(int WEAPONTYPE)
 	int iIndex = 0;
 	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
-		if ((*iter)->GetWeaponType() == WEAPONTYPE)
+		if ((*iter)->GetWeaponType(iter) == WEAPONTYPE)
 		{
 			break;
 		}
@@ -154,6 +89,8 @@ int WeaponManager::WeaponIndex(int WEAPONTYPE)
 
 void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName)
 {
+	Weapon tmp;
+	LoadAllWeapon(tmp);
 	int iSelect;
 	int n = 2;
 	int iGold;
@@ -175,13 +112,13 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 		m_DrawManager.DrawMidText(WeaponTypeName, WIDTH, iHeight);
 		cout << " Shop";
 		YELLOW
-			for (int i = 0; i < iMax; i++)
-			{
-				if (i > 4)
-					break;
-				WeaponList[i]->ShowWeapon(n, iHeight, WeaponTypeName);
-				iIndex++;
-			}
+		for (int i = 0; i < iMax; i++)
+		{
+			if (i > 4)
+				break;
+			WeaponList[i]->ShowWeapon(n, iHeight, WeaponTypeName);
+			iIndex++;
+		}
 		ORIGINAL
 			iHeight += n;
 		m_DrawManager.DrawMidText("이전 페이지", WIDTH, iHeight);

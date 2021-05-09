@@ -43,8 +43,8 @@ void Player::ShowInfo()
 		if (m_bWeapon == true)
 		{
 			m_DrawManager.DrawMidText("무기타입 : ", WIDTH - 22, HEIGHT / 2);
-			ShowWeaponType(m_Inventory[m_iWeaponSelect].m_iWEAPONTYPE);
-			cout << " 무기이름 : " << m_Inventory[m_iWeaponSelect].m_strName << "  공격력 : " << m_Inventory[m_iWeaponSelect].m_iAttack;
+			ShowWeaponType(m_Inventory[m_iWeaponSelect]->GetWeaponType());
+			cout << " 무기이름 : " << m_Inventory[m_iWeaponSelect]->GetName() << "  공격력 : " << m_Inventory[m_iWeaponSelect]->GetAttack();
 		}
 		ORIGINAL
 			m_DrawManager.DrawMidText("인벤토리", WIDTH, HEIGHT / 2 + 3);
@@ -88,11 +88,11 @@ void Player::ShowInventory()
 	ORIGINAL
 		m_DrawManager.DrawMidText("§§§ Inventory §§§", WIDTH, iHeight);
 	YELLOW
-		for (vector<WeaponInfo>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
+		for (vector<Weapon*>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
 		{
 			iHeight += n;
 			m_DrawManager.gotoxy(WIDTH - 8, iHeight);
-			cout << iter->m_strName;
+			cout << (*iter)->GetName();
 		}
 	iSelect = m_DrawManager.MenuSelectCursor(m_Inventory.size(), 2, WIDTH / 4, HEIGHT - 28);
 	m_iWeaponSelect = iSelect - 1;
@@ -193,9 +193,9 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 		m_fSave << m_Inventory.size() << endl;
 		if (!m_Inventory.empty())
 		{
-			for (vector<WeaponInfo>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
+			for (vector<Weapon*>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
 			{
-				m_fSave << iter->m_iWEAPONTYPE << " " << iter->m_strName << " " << iter->m_iAttack << " " << iter->m_iPrice << endl;
+				m_fSave << (*iter)->GetWeaponType(iter) << " " << (*iter)->GetName() << " " << (*iter)->GetAttack() << " " << (*iter)->GetPrice() << endl;
 			}
 		}
 	}
@@ -212,7 +212,9 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 {
 	char ch;
 	int invenSize;
-	WeaponInfo tmp;
+	WeaponStatus tmp;
+	Weapon* wTmp = NULL;
+
 	m_fLoad >> m_Status.m_strName >> m_Status.m_iAttack >> m_Status.m_iHP >> 
 		m_Status.m_iDefaultEXP >> m_Status.m_iGetEXP >> m_Status.m_iLevel >> m_Status.m_iGold >> m_iEXP >> m_Status.m_iDefaultHP;
 	m_fLoad >> invenSize;
@@ -221,7 +223,8 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 		for (int i = 0; i < invenSize; i++)
 		{
 			m_fLoad >> tmp.m_iWEAPONTYPE >> tmp.m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
-			m_Inventory.push_back(tmp);
+			wTmp->SetWeapon(tmp);
+			m_Inventory.push_back(wTmp);
 		}
 	}
 	system("cls");
