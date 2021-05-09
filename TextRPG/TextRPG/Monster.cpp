@@ -68,7 +68,7 @@ void MonsterManager::ShowInfo()
 
 void MonsterManager::BattleInfo(int index)
 {
-	vector<Monster*>::iterator iter;
+	MonsterList[index].ShowInfo(1, HEIGHT - 8);
 }
 
 Monster::~Monster()

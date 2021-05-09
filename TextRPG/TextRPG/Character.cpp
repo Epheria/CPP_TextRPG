@@ -9,14 +9,17 @@ inline int Character::Attack()
 
 }
 
-inline int Character::GetDamage(int HP, int Damage)
+inline void Character::GetDamage(int Damage)
 {
-	return HP - Damage;
+	 m_Status.m_iHP -= Damage;
 }
 
 inline bool Character::DeathCheck()
 {
-	return false;
+	if (m_Status.m_iHP <= 0)
+		return true;
+	else
+		return false;
 }
 
 

@@ -25,6 +25,7 @@ void Player::LoadDefaultInfo()
 		m_fLoad >> m_Status.m_iGetEXP;
 		m_fLoad >> m_Status.m_iLevel;
 		m_fLoad >> m_Status.m_iGold;
+		m_Status.m_iDefaultHP = m_Status.m_iHP;
 	}
 	m_fLoad.close();
 }
@@ -124,7 +125,7 @@ void Player::ShowWeaponType(int iType)
 	}
 }
 
-void Player::Win(Monster& m_Monster, int index)
+void Player::Win(Monster m_Monster, int index)
 {
 	char ch;
 	int getGold;
@@ -136,11 +137,11 @@ void Player::Win(Monster& m_Monster, int index)
 	cout << m_Status.m_strName << " 승리!!";
 	m_DrawManager.gotoxy(WIDTH - 4, HEIGHT - 17);
 	cout << m_Status.m_strName << "가 경험치 ";
-	m_Status.m_iGetEXP = m_Monster.GiveEXP(index);
+	m_Status.m_iGetEXP = m_Monster.GiveEXP();
 	cout << m_Status.m_iGetEXP << "를 얻었습니다.";
 	ch = _getch();
 
-	getGold = m_Monster.GiveGold(index);
+	getGold = m_Monster.GiveGold();
 	m_Status.m_iGold += getGold;
 	m_iEXP += m_Status.m_iGetEXP;
 	if (m_iEXP >= m_Status.m_iDefaultEXP)
@@ -213,7 +214,9 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 	char ch;
 	int invenSize;
 	WeaponStatus tmp;
-	Weapon* wTmp = NULL;
+	Weapon* wTmp = new Weapon; // 포인터인데 가리키는 값이 없어서 처음에 에러뜸
+	// 그래서 NULL 로 초기화했더니 SetWeapon 에서 예외발생함
+	// 그래서 Weapon.cpp 에서 WeaponList.txt 불러올때랑 마찬가지로 동적할당으로 변경
 
 	m_fLoad >> m_Status.m_strName >> m_Status.m_iAttack >> m_Status.m_iHP >> 
 		m_Status.m_iDefaultEXP >> m_Status.m_iGetEXP >> m_Status.m_iLevel >> m_Status.m_iGold >> m_iEXP >> m_Status.m_iDefaultHP;
@@ -234,6 +237,66 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
 	cout << "Load 완료";
 	ch = _getch();
+}
+
+int Player::Attack()
+{
+	Weapon* tmp;
+	int SkillAtk;
+	int SumAtk;
+	if (m_Inventory.empty())
+		return m_Status.m_iAttack;
+	else
+	{
+		SumAtk = m_Status.m_iAttack + m_Inventory[m_iWeaponSelect]->GetAttack();
+		tmp = m_Inventory[m_iWeaponSelect];
+
+		switch (m_Inventory[m_iWeaponSelect]->GetWeaponType())
+		{
+		case 1:
+		{
+			Bow* tmp2;
+			tmp2 = (Bow*)tmp;
+			SkillAtk = tmp2->UseSkill(SumAtk);
+			return SkillAtk;
+		}
+		case 2:
+		{
+			Dagger* tmp2;
+			tmp2 = (Dagger*)tmp;
+			SkillAtk = tmp2->UseSkill(SumAtk);
+			return SkillAtk;
+		}
+		case 3:
+		{
+			Gun* tmp2;
+			tmp2 = (Gun*)tmp;
+			SkillAtk = tmp2->UseSkill(SumAtk);
+			return SkillAtk;
+		}
+		case 4:
+		{
+			Sword* tmp2;
+			tmp2 = (Sword*)tmp;
+			SkillAtk = tmp2->UseSkill(SumAtk);
+			return SkillAtk;
+		}
+		case 5:
+		{
+			Wand* tmp2;
+			tmp2 = (Wand*)tmp;
+			SkillAtk = tmp2->UseSkill(SumAtk);
+			return SkillAtk;
+		}
+		case 6:
+		{
+			Hammer* tmp2;
+			tmp2 = (Hammer*)tmp;
+			SkillAtk = tmp2->UseSkill(SumAtk);
+			return SkillAtk;
+		}
+		}
+	}
 }
 
 Player::~Player()

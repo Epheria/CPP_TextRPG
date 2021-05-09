@@ -20,7 +20,7 @@ protected:
 public:
 	virtual inline int Attack() = 0;
 	virtual inline bool DeathCheck();
-	virtual inline int GetDamage(int HP, int Damage);
+	virtual inline void GetDamage(int Damage);
 
 	Character();
 	virtual ~Character();

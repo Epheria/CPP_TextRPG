@@ -12,7 +12,6 @@ private:
 	int m_iWeaponSelect;
 	bool m_bWeapon;
 	vector<Weapon*> m_Inventory;
-	Weapon m_Weapon;
 
 public:
 	void LoadDefaultInfo();
@@ -22,9 +21,10 @@ public:
 	void ShowWeaponType(int iType);
 	void ShowInventory();
 	void LevelUP();
-	void Win(Monster& m_Monster, int index);
+	void Win(Monster m_Monster, int index);
 	void Save(ofstream& m_fSave, int iSelect, string m_FileName[]);
 	void Load(ifstream& m_fLoad, int iSelect);
+	int Attack();
 
 	inline int GetGold()
 	{
@@ -41,30 +41,6 @@ public:
 
 		m_Inventory.push_back(tmp);
 		m_bWeapon = true;
-	}
-	inline bool DeathCheck()
-	{
-		if (m_Status.m_iHP <= 0)
-			return true;
-		else
-			return false;
-	}
-	inline int Attack()
-	{
-		int SkillAtk;
-		int SumAtk;
-		if (m_Inventory.empty())
-			return m_Status.m_iAttack;
-		else
-		{
-			SumAtk = m_Status.m_iAttack + m_Inventory[m_iWeaponSelect]->GetAttack();
-			SkillAtk = m_Weapon.UseSkill(SumAtk);
-			return SkillAtk;
-		}
-	}
-	inline void GetDamage(int Damage)
-	{
-		m_Status.m_iHP -= Damage;
 	}
 	inline void ResetWeapon()
 	{

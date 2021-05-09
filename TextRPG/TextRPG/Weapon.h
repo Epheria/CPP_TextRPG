@@ -26,7 +26,7 @@ private:
 public:
 	vector<Weapon*> LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, Weapon* tmp);
 	void ShowWeapon(int i, int iHeight, string WeaponTypeName);
-	virtual int UseSkill(int PlayerAtk)
+	int UseSkill(int PlayerAtk)
 	{
 		return PlayerAtk;
 	}
@@ -58,7 +58,7 @@ public:
 	{
 		return m_WeaponStatus.m_strName;
 	}
-	void SetWeapon(WeaponStatus tmp) 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄
+	void SetWeapon(WeaponStatus tmp) 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄 + WeaponList pushback 할때도 필요..
 	{
 		m_WeaponStatus.m_iAttack = tmp.m_iAttack;
 		m_WeaponStatus.m_iPrice = tmp.m_iPrice;
@@ -67,7 +67,7 @@ public:
 	}
 
 	Weapon();
-	~Weapon();
+	virtual ~Weapon();
 };
 
 class WeaponManager
@@ -76,7 +76,7 @@ private:
 	MapDraw m_DrawManager;
 	vector<Weapon*> WeaponList;
 public:
-	void LoadAllWeapon(Weapon m_Weapon);
+	void LoadAllWeapon();
 	int WeaponCount(int WEAPONTYPE);
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName);
 	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName, int iMax, int iIndex);
@@ -88,7 +88,7 @@ class Bow : public Weapon
 private:
 	MapDraw m_DrawManager;
 public:
-	int UseSkill(int WEAPONTYPE, int PlayerAtk)
+	int UseSkill(int PlayerAtk)
 	{
 		char ch;
 		int iRand = Random();

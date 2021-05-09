@@ -294,10 +294,10 @@ void GameManager::Battle(int index)
 		flag = WinnerCheck(MonsterAtk, input, index);
 		if (flag == true)
 		{
-			m_Monster.GetDamage(1, m_User.Attack());
-			if (m_Monster.DeathCheck(index) == true)
+			m_MonsterManager.GetDamage(index , m_User.Attack());
+			if (m_MonsterManager.DeathCheck(index) == true)
 			{
-				m_User.Win(m_Monster, index);
+				m_User.Win(m_MonsterManager.GetMonster(index), index);
 				m_MonsterManager.ResetMonster();
 				m_MonsterManager.LoadDefaultInfo();
 				return;
@@ -309,11 +309,11 @@ void GameManager::Battle(int index)
 		{
 			string strMonsterName;
 			char ch;
-			strMonsterName = m_Monster.GetName(index);
+			strMonsterName = m_MonsterManager.GetName(index);
 			if (MonsterAtk == input)
 				continue;
 
-			m_User.GetDamage(m_Monster.Attack());
+			m_User.GetDamage(m_MonsterManager.GetAttack(index));
 			system("cls");
 			BLUE
 				BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
@@ -403,7 +403,7 @@ void GameManager::PrintAttack(char ch)
 
 void GameManager::ShowShopMenu()
 {
-	m_WeaponManager.LoadAllWeapon(m_Weapon);
+	m_WeaponManager.LoadAllWeapon();
 	int iSelect;
 
 	while (1)

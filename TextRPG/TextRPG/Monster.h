@@ -15,25 +15,24 @@ public:
 	{
 		return m_Status.m_iAttack;
 	}
-	inline int GiveEXP(int index)
+	inline int GiveEXP()
 	{
 		return m_Status.m_iDefaultEXP;
 	}
-	inline int GiveGold(int index)
+	inline int GiveGold()
 	{
 		return m_Status.m_iGold;
 	}
-	inline bool DeathCheck(int index)
-	{
-		if (m_Status.m_iHP <= 0)
-			return true;
-		else
-			return false;
-	}
-	inline string GetName(int index)
+	inline string GetName()
 	{
 		return m_Status.m_strName;
 	}
+
+	int ShowHP()
+	{
+		return m_Status.m_iHP;
+	}
+
 	Monster();
 	~Monster();
 };
@@ -58,10 +57,25 @@ public:
 	{
 		return MonsterList;
 	}
-	void GetDamage(int index)
+	void GetDamage(int index, int damage)
 	{
-		int iDamage;
-		iDamage = MonsterList[index].GetDamage()
+		MonsterList[index].GetDamage(damage);
+	}
+	bool DeathCheck(int index)
+	{
+		return MonsterList[index].DeathCheck();
+	}
+	Monster GetMonster(int index)
+	{
+		return MonsterList[index];
+	}
+	string GetName(int index)
+	{
+		return MonsterList[index].GetName();
+	}
+	int GetAttack(int index)
+	{
+		return MonsterList[index].Attack();
 	}
 	MonsterManager()
 	{

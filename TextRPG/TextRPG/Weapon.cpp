@@ -16,7 +16,7 @@ vector<Weapon*> Weapon::LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, W
 	if (m_fLoad.is_open())
 	{
 		m_fLoad >> iMax;
-		for (int i = 0, j =0; i < iMax; i++, j++)
+		for (int i = 0; i < iMax; i++)
 		{
 			tmp = new Weapon;
 			m_fLoad >> sTmp.m_iWEAPONTYPE;
@@ -44,7 +44,7 @@ void Weapon::ShowWeapon(int i, int iHeight, string WeaponTypeName)
 	cout << "무기이름 : " << m_WeaponStatus.m_strName << "  공격력 : " << m_WeaponStatus.m_iAttack;
 }
 
-void WeaponManager::LoadAllWeapon(Weapon m_Weapon)
+void WeaponManager::LoadAllWeapon()
 {
 	Bow m_Bow;
 	Dagger m_Dagger;
@@ -53,12 +53,12 @@ void WeaponManager::LoadAllWeapon(Weapon m_Weapon)
 	Wand m_Wand;
 	Hammer m_Hammer;
 
-	WeaponList = m_Weapon.LoadWeapon(BOW, WeaponList, &m_Bow);
-	WeaponList = m_Weapon.LoadWeapon(DAGGER, WeaponList, &m_Dagger);
-	WeaponList = m_Weapon.LoadWeapon(GUN, WeaponList, &m_Gun);
-	WeaponList = m_Weapon.LoadWeapon(SWORD, WeaponList, &m_Sword);
-	WeaponList = m_Weapon.LoadWeapon(WAND, WeaponList, &m_Wand);
-	WeaponList = m_Weapon.LoadWeapon(HAMMER, WeaponList, &m_Hammer);
+	WeaponList = m_Bow.LoadWeapon(BOW, WeaponList, &m_Bow);
+	WeaponList = m_Dagger.LoadWeapon(DAGGER, WeaponList, &m_Dagger);
+	WeaponList = m_Gun.LoadWeapon(GUN, WeaponList, &m_Gun);
+	WeaponList = m_Sword.LoadWeapon(SWORD, WeaponList, &m_Sword);
+	WeaponList = m_Wand.LoadWeapon(WAND, WeaponList, &m_Wand);
+	WeaponList = m_Hammer.LoadWeapon(HAMMER, WeaponList, &m_Hammer);
 }
 
 int WeaponManager::WeaponCount(int WEAPONTYPE)
