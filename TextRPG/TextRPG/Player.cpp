@@ -237,6 +237,7 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT / 3 + 4);
 	cout << "Load ¿Ï·á";
 	ch = _getch();
+	delete wTmp;
 }
 
 int Player::Attack()
