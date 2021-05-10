@@ -4,7 +4,7 @@
 #include "Macro.h"
 #include "Weapon.h"
 #include "Monster.h"
-class Player : public Character, public Weapon
+class Player : public Character
 {
 private:
 	MapDraw m_DrawManager;

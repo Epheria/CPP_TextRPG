@@ -57,12 +57,12 @@ public:
 	{
 		return m_strName;
 	}
-	void SetWeapon() 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄 + WeaponList pushback 할때도 필요..
+	void SetWeapon(WEAPONTYPE eType, string strName, int iAtk, int iPrice) 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄 + WeaponList pushback 할때도 필요..
 	{
-		m_WeaponStatus.m_iAttack = tmp.m_iAttack;
-		m_WeaponStatus.m_iPrice = tmp.m_iPrice;
-		m_WeaponStatus.m_iWEAPONTYPE = tmp.m_iWEAPONTYPE;
-		m_WeaponStatus.m_strName = tmp.m_strName;
+		m_iAttack = iAtk;
+		m_iPrice = iPrice;
+		m_eWEAPONTYPE = eType;
+		m_strName = strName;
 	}
 
 	Weapon();
@@ -76,10 +76,10 @@ private:
 	vector<Weapon*> WeaponList;
 public:
 	void LoadAllWeapon();
-	int WeaponCount(int iType);
-	void ShowWeaponInfo(int iType, Player& User, string WeaponTypeName);
-	void ShowWeaponInfo(int iType, Player& User, string WeaponTypeName, int iMax, int iIndex);
-	int WeaponIndex(int iType);
+	int WeaponCount(WEAPONTYPE eType);
+	void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName);
+	void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName, int iMax, int iIndex);
+	int WeaponIndex(WEAPONTYPE eType);
 };
 
 class Bow : public Weapon

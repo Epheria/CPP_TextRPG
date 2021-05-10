@@ -19,13 +19,13 @@ void Player::LoadDefaultInfo()
 	m_fLoad.open("DefaultPlayer.txt");
 	if (m_fLoad.is_open())
 	{
-		m_fLoad >> m_iAttack;
+		m_fLoad >> Character::m_iAttack;
 		m_fLoad >> m_iHP;
 		m_fLoad >> m_iDefaultEXP;
 		m_fLoad >> m_iGetEXP;
 		m_fLoad >> m_iLevel;
 		m_fLoad >> m_iGold;
-		m_Status.m_iDefaultHP = m_iHP;
+		m_iDefaultHP = m_iHP;
 	}
 	m_fLoad.close();
 }
@@ -66,13 +66,13 @@ void Player::ShowInfo()
 void Player::PlayerInfo(int iHeight)
 {
 	m_DrawManager.DrawMidText("===== ", WIDTH - 8, iHeight);
-	cout << m_Status.m_strName << "(" << m_Status.m_iLevel << "Lv)" << " =====" << endl;
+	cout << m_strName << "(" << m_iLevel << "Lv)" << " =====" << endl;
 	m_DrawManager.DrawMidText("공격력 = ", WIDTH - 10, iHeight + 1);
-	cout << m_Status.m_iAttack << "\t" << " 생명력 = " << m_Status.m_iHP << "/" << m_Status.m_iDefaultHP << endl;
+	cout << m_iAttack << "\t" << " 생명력 = " << m_iHP << "/" << m_iDefaultHP << endl;
 	m_DrawManager.DrawMidText("경험치 = ", WIDTH - 10, iHeight + 2);
-	cout << m_iEXP << "/" << m_Status.m_iDefaultEXP << "\t" << " GetEXP : " << m_Status.m_iGetEXP << endl;
+	cout << m_iEXP << "/" << m_iDefaultEXP << "\t" << " GetEXP : " << m_iGetEXP << endl;
 	m_DrawManager.DrawMidText("Gold = ", WIDTH - 11, iHeight + 3);
-	cout << m_Status.m_iGold << endl;
+	cout << m_iGold << endl;
 }
 
 void Player::ShowInventory()
@@ -134,26 +134,26 @@ void Player::Win(Monster m_Monster, int index)
 		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
 		m_DrawManager.gotoxy(WIDTH - 4, HEIGHT - 20);
-	cout << m_Status.m_strName << " 승리!!";
+	cout << m_strName << " 승리!!";
 	m_DrawManager.gotoxy(WIDTH - 4, HEIGHT - 17);
-	cout << m_Status.m_strName << "가 경험치 ";
-	m_Status.m_iGetEXP = m_Monster.GiveEXP();
-	cout << m_Status.m_iGetEXP << "를 얻었습니다.";
+	cout << m_strName << "가 경험치 ";
+	m_iGetEXP = m_Monster.GiveEXP();
+	cout << m_iGetEXP << "를 얻었습니다.";
 	ch = _getch();
 
 	getGold = m_Monster.GiveGold();
-	m_Status.m_iGold += getGold;
-	m_iEXP += m_Status.m_iGetEXP;
-	if (m_iEXP >= m_Status.m_iDefaultEXP)
+	m_iGold += getGold;
+	m_iEXP += m_iGetEXP;
+	if (m_iEXP >= m_iDefaultEXP)
 	{
-		for (int i = 0; m_iEXP >= m_Status.m_iDefaultEXP; i++)
+		for (int i = 0; m_iEXP >= m_iDefaultEXP; i++)
 		{
-			m_iEXP -= m_Status.m_iDefaultEXP;
+			m_iEXP -= m_iDefaultEXP;
 			LevelUP();
 		}
 	}
 
-	m_Status.m_iGetEXP = 0;
+	m_iGetEXP = 0;
 }
 
 void Player::LevelUP()
@@ -167,7 +167,7 @@ void Player::LevelUP()
 		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 	RED
 		m_DrawManager.gotoxy(WIDTH, HEIGHT - 20);
-	cout << m_Status.m_strName << "레벨업!!";
+	cout << m_strName << "레벨업!!";
 	m_DrawManager.gotoxy(WIDTH, HEIGHT - 17);
 	GetAtk = 1;
 	GetHP = 10;
@@ -176,11 +176,11 @@ void Player::LevelUP()
 	cout << "생명력 " << GetHP << " 증가!!";
 	ch = _getch();
 
-	m_Status.m_iLevel++;
-	m_Status.m_iAttack += GetAtk;
-	m_Status.m_iDefaultHP += GetHP;
-	m_Status.m_iHP = m_Status.m_iDefaultHP;
-	m_Status.m_iDefaultEXP += 3;
+	m_iLevel++;
+	m_iAttack += GetAtk;
+	m_iDefaultHP += GetHP;
+	m_iHP = m_iDefaultHP;
+	m_iDefaultEXP += 3;
 }
 
 void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
@@ -189,8 +189,8 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 	m_fSave.open(m_FileName[iSelect - 1]);
 	if (m_fSave.is_open())
 	{
-		m_fSave << m_Status.m_strName << " " << m_Status.m_iAttack << " " << m_Status.m_iHP << " " << m_Status.m_iDefaultEXP << " "
-			<< m_Status.m_iGetEXP << " " << m_Status.m_iLevel << " " << m_Status.m_iGold << " " << m_iEXP << " " << m_Status.m_iDefaultHP << endl;
+		m_fSave << m_strName << " " << m_iAttack << " " << m_iHP << " " << m_iDefaultEXP << " "
+			<< m_iGetEXP << " " << m_iLevel << " " << m_iGold << " " << m_iEXP << " " << m_iDefaultHP << endl;
 		m_fSave << m_Inventory.size() << endl;
 		if (!m_Inventory.empty())
 		{
@@ -213,21 +213,22 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 {
 	char ch;
 	int invenSize;
+	string strName;
+	int iAtk, iPrice, iType;
+
 	Weapon* wTmp = new Weapon; // 포인터인데 가리키는 값이 없어서 처음에 에러뜸
 	// 그래서 NULL 로 초기화했더니 SetWeapon 에서 예외발생함
 	// 그래서 Weapon.cpp 에서 WeaponList.txt 불러올때랑 마찬가지로 동적할당으로 변경
 
-	m_fLoad >> m_Status.m_strName >> m_Status.m_iAttack >> m_Status.m_iHP >> 
-		m_Status.m_iDefaultEXP >> m_Status.m_iGetEXP >> m_Status.m_iLevel >> m_Status.m_iGold >> m_iEXP >> m_Status.m_iDefaultHP;
+	m_fLoad >> m_strName >> m_iAttack >> m_iHP >> 
+		m_iDefaultEXP >> m_iGetEXP >> m_iLevel >> m_iGold >> m_iEXP >> m_iDefaultHP;
 	m_fLoad >> invenSize;
 	if (invenSize > 0)
 	{
 		for (int i = 0; i < invenSize; i++)
 		{
-			int iType;
-			m_fLoad >> iType >> m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
-			tmp.m_iWEAPONTYPE = (WEAPONTYPE)iType;
-			wTmp->SetWeapon(tmp);
+			m_fLoad >> iType >> strName >> iAtk >> iPrice;
+			wTmp->SetWeapon((WEAPONTYPE)iType, strName, iAtk, iPrice);
 			m_Inventory.push_back(wTmp);
 		}
 	}
@@ -247,14 +248,14 @@ int Player::Attack()
 	int SkillAtk;
 	int SumAtk;
 	if (m_Inventory.empty())
-		return m_Status.m_iAttack;
+		return m_iAttack;
 	else
 	{
 		for (iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
 			if ((*iter)->GetWeaponType() == m_Inventory[m_iWeaponSelect]->GetWeaponType())
 				break;
 
-		SumAtk = m_Status.m_iAttack + (*iter)->GetAttack();
+		SumAtk = m_iAttack + (*iter)->GetAttack();
 
 		switch ((*iter)->GetWeaponType())
 		{

@@ -13,9 +13,9 @@ void Monster::StatusLoad(Monster tmp, vector<Monster>& MonsterList)
 		m_fLoad >> iCount;
 		for (int i = 0; i < iCount; i++)
 		{
-			m_fLoad >> tmp.m_Status.m_strName >> tmp.m_Status.m_iAttack >> tmp.m_Status.m_iHP >> tmp.m_Status.m_iDefaultEXP 
-				>> tmp.m_Status.m_iGetEXP >> tmp.m_Status.m_iLevel >> tmp.m_Status.m_iGold;
-			tmp.m_Status.m_iDefaultHP = tmp.m_Status.m_iHP;
+			m_fLoad >> tmp.m_strName >> tmp.m_iAttack >> tmp.m_iHP >> tmp.m_iDefaultEXP 
+				>> tmp.m_iGetEXP >> tmp.m_iLevel >> tmp.m_iGold;
+			tmp.m_iDefaultHP = tmp.m_iHP;
 			MonsterList.push_back(tmp);
 		}
 	}
@@ -26,16 +26,16 @@ void Monster::ShowInfo(int i, int iHeight)
 	YELLOW
 		iHeight += i;
 	DrawManager.gotoxy(WIDTH - 8, iHeight);
-	cout << "===== " << m_Status.m_strName << "(" << m_Status.m_iLevel << "Lv)" << " =====" << endl;
+	cout << "===== " << m_strName << "(" << m_iLevel << "Lv)" << " =====" << endl;
 	iHeight += i;
 	DrawManager.gotoxy(WIDTH - 12, iHeight);
-	cout << "공격력 = " << m_Status.m_iAttack << "\t" << "생명력 = " << m_Status.m_iHP << "/" << m_Status.m_iDefaultHP << endl;
+	cout << "공격력 = " << m_iAttack << "\t" << "생명력 = " << m_iHP << "/" << m_iDefaultHP << endl;
 	iHeight += i;
 	DrawManager.gotoxy(WIDTH - 12, iHeight);
-	cout << "경험치 = " << m_Status.m_iDefaultEXP << "/" << m_Status.m_iDefaultEXP << "\t" << "GetEXP : " << m_Status.m_iGetEXP << endl;
+	cout << "경험치 = " << m_iDefaultEXP << "/" << m_iDefaultEXP << "\t" << "GetEXP : " << m_iGetEXP << endl;
 	iHeight += i;
 	DrawManager.gotoxy(WIDTH - 12, iHeight);
-	cout << "Gold = " << m_Status.m_iGold << endl;
+	cout << "Gold = " << m_iGold << endl;
 }
 
 char Monster::AttackRes()

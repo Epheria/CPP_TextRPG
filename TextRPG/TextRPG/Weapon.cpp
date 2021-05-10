@@ -65,12 +65,12 @@ void WeaponManager::LoadAllWeapon()
 
 }
 
-int WeaponManager::WeaponCount(int iType)
+int WeaponManager::WeaponCount(WEAPONTYPE eType)
 {
 	int iCount = 0;
 	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
-		if ((*iter)->GetWeaponType(iter) == iType)
+		if ((*iter)->GetWeaponType(iter) == eType)
 		{
 			iCount++;
 		}
@@ -78,12 +78,12 @@ int WeaponManager::WeaponCount(int iType)
 	return iCount;
 }
 
-int WeaponManager::WeaponIndex(int iType)
+int WeaponManager::WeaponIndex(WEAPONTYPE eType)
 {
 	int iIndex = 0;
 	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
-		if ((*iter)->GetWeaponType(iter) == iType)
+		if ((*iter)->GetWeaponType(iter) == eType)
 		{
 			break;
 		}
@@ -92,7 +92,7 @@ int WeaponManager::WeaponIndex(int iType)
 	return iIndex;
 }
 
-void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeName)
+void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName)
 {
 	int iSelect;
 	int n = 2;
@@ -102,8 +102,8 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 	{
 		system("cls");
 		int iHeight = HEIGHT - 30;
-		int iMax = WeaponCount(iType);
-		int iIndex = WeaponIndex(iType);
+		int iMax = WeaponCount(eType);
+		int iIndex = WeaponIndex(eType);
 		int iIndex_s = iIndex;
 		iGold = User.GetGold();
 		BLUE
@@ -119,7 +119,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 		{
 			if (i > 4)
 				break;
-			if (WeaponList[iIndex]->GetWeaponType() == iType)
+			if (WeaponList[iIndex]->GetWeaponType() == eType)
 			{
 				WeaponList[iIndex]->ShowWeapon(n, iHeight, WeaponTypeName);
 				iHeight += n + 1;
@@ -172,7 +172,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 			}
 			else if (iSelect == 5 + 1)
 			{
-				ShowWeaponInfo(iType, User, WeaponTypeName);
+				ShowWeaponInfo(eType, User, WeaponTypeName);
 				return;
 			}
 			else if (iSelect == 5 + 2)
@@ -181,7 +181,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 				{
 					iMax -= 5;
 				}
-				ShowWeaponInfo(iType, User, WeaponTypeName, iMax, iIndex);
+				ShowWeaponInfo(eType, User, WeaponTypeName, iMax, iIndex);
 				return;
 			}
 			else if (iSelect == 5 + 3)
@@ -190,7 +190,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 	}
 }
 
-void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeName, int iMax, int iIndex)
+void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName, int iMax, int iIndex)
 {
 	int iSelect, iCur = 0;
 	int n = 2;
@@ -215,7 +215,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 			{
 				if (i > 4)
 					break;
-				if (WeaponList[iIndex]->GetWeaponType() == iType)
+				if (WeaponList[iIndex]->GetWeaponType() == eType)
 				{
 					WeaponList[iIndex]->ShowWeapon(n, iHeight, WeaponTypeName);
 					iHeight += n + 1;
@@ -248,7 +248,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 			}
 			else if (iSelect == iMax + 1)
 			{
-				ShowWeaponInfo(iType, User, WeaponTypeName);
+				ShowWeaponInfo(eType, User, WeaponTypeName);
 				return;
 			}
 			else if (iSelect == iMax + 2)
@@ -273,7 +273,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 			}
 			else if (iSelect == 5 + 1)
 			{
-				ShowWeaponInfo(iType, User, WeaponTypeName);
+				ShowWeaponInfo(eType, User, WeaponTypeName);
 				return;
 			}
 			else if (iSelect == 5 + 2)
@@ -282,7 +282,7 @@ void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeNam
 				{
 					iMax -= 5;
 				}
-				ShowWeaponInfo(iType, User, WeaponTypeName, iMax, iIndex);
+				ShowWeaponInfo(eType, User, WeaponTypeName, iMax, iIndex);
 
 				return;
 			}
