@@ -1,6 +1,7 @@
 #pragma once
 #include "Macro.h"
 #include "MapDraw.h"
+
 /*
 상점 구현
 : 메뉴 선택을 if 문으로 만들고 iSelect 개수만큼 더하면 1개든 2개든 3개든 4개든 5개든 그에 맞게 메뉴가 구현이 가능하다.
@@ -11,7 +12,7 @@ weapon 자식들을 부모의 load로 불러와서
 */
 typedef struct WeaponStatus
 {
-	int m_iWEAPONTYPE;
+	WEAPONTYPE m_iWEAPONTYPE;
 	int m_iPrice;
 	string m_strName;
 	int m_iAttack;
@@ -24,9 +25,9 @@ private:
 	MapDraw m_DrawManager;
 	WeaponStatus m_WeaponStatus;
 public:
-	vector<Weapon*> LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, Weapon* tmp);
+	void LoadWeapon(ifstream& fLoad, int iType);
 	void ShowWeapon(int i, int iHeight, string WeaponTypeName);
-	int UseSkill(int PlayerAtk)
+	virtual int UseSkill(int PlayerAtk)
 	{
 		return PlayerAtk;
 	}
@@ -44,7 +45,9 @@ public:
 	}
 	int GetWeaponType()
 	{
-		return m_WeaponStatus.m_iWEAPONTYPE;
+		int iType;
+		iType = m_WeaponStatus.m_iWEAPONTYPE;
+		return iType;
 	}
 	int GetPrice()
 	{
@@ -77,10 +80,10 @@ private:
 	vector<Weapon*> WeaponList;
 public:
 	void LoadAllWeapon();
-	int WeaponCount(int WEAPONTYPE);
-	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName);
-	void ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName, int iMax, int iIndex);
-	int WeaponIndex(int WEAPONTYPE);
+	int WeaponCount(int iType);
+	void ShowWeaponInfo(int iType, Player& User, string WeaponTypeName);
+	void ShowWeaponInfo(int iType, Player& User, string WeaponTypeName, int iMax, int iIndex);
+	int WeaponIndex(int iType);
 };
 
 class Bow : public Weapon

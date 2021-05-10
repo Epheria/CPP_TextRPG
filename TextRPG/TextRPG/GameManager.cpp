@@ -431,22 +431,22 @@ void GameManager::ShowShopMenu()
 		switch (iSelect)
 		{
 		case 1:
-			m_WeaponManager.ShowWeaponInfo(DAGGER, m_User, "Dagger");
+			m_WeaponManager.ShowWeaponInfo(WEAPONTYPE_DAGGER, m_User, "Dagger");
 			break;
 		case 2:
-			m_WeaponManager.ShowWeaponInfo(GUN, m_User, "Gun");
+			m_WeaponManager.ShowWeaponInfo(WEAPONTYPE_GUN, m_User, "Gun");
 			break;
 		case 3:
-			m_WeaponManager.ShowWeaponInfo(SWORD, m_User, "Sword");
+			m_WeaponManager.ShowWeaponInfo(WEAPONTYPE_SWORD, m_User, "Sword");
 			break;
 		case 4:
-			m_WeaponManager.ShowWeaponInfo(WAND, m_User, "Wand");
+			m_WeaponManager.ShowWeaponInfo(WEAPONTYPE_WAND, m_User, "Wand");
 			break;
 		case 5:
-			m_WeaponManager.ShowWeaponInfo(BOW, m_User, "Bow");
+			m_WeaponManager.ShowWeaponInfo(WEAPONTYPE_BOW, m_User, "Bow");
 			break;
 		case 6:
-			m_WeaponManager.ShowWeaponInfo(HAMMER, m_User, "Hammer");
+			m_WeaponManager.ShowWeaponInfo(WEAPONTYPE_HAMMER, m_User, "Hammer");
 			break;
 		case 7:
 			return;

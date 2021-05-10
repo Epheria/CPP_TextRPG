@@ -225,7 +225,9 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 	{
 		for (int i = 0; i < invenSize; i++)
 		{
-			m_fLoad >> tmp.m_iWEAPONTYPE >> tmp.m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
+			int iType;
+			m_fLoad >> iType >> tmp.m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
+			tmp.m_iWEAPONTYPE = (WEAPONTYPE)iType;
 			wTmp->SetWeapon(tmp);
 			m_Inventory.push_back(wTmp);
 		}
@@ -242,57 +244,49 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 int Player::Attack()
 {
 	Weapon* tmp;
+	vector<Weapon*>::iterator iter;
 	int SkillAtk;
 	int SumAtk;
 	if (m_Inventory.empty())
 		return m_Status.m_iAttack;
 	else
 	{
-		SumAtk = m_Status.m_iAttack + m_Inventory[m_iWeaponSelect]->GetAttack();
-		tmp = m_Inventory[m_iWeaponSelect];
+		for (iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
+			if ((*iter)->GetWeaponType() == m_Inventory[m_iWeaponSelect]->GetWeaponType())
+				break;
 
-		switch (m_Inventory[m_iWeaponSelect]->GetWeaponType())
+		SumAtk = m_Status.m_iAttack + (*iter)->GetAttack();
+
+		switch ((*iter)->GetWeaponType())
 		{
 		case 1:
 		{
-			Bow* tmp2;
-			tmp2 = (Bow*)tmp;
-			SkillAtk = tmp2->UseSkill(SumAtk);
+			SkillAtk = (*iter)->UseSkill(SumAtk);
 			return SkillAtk;
 		}
 		case 2:
 		{
-			Dagger* tmp2;
-			tmp2 = (Dagger*)tmp;
-			SkillAtk = tmp2->UseSkill(SumAtk);
+			SkillAtk = (*iter)->UseSkill(SumAtk);
 			return SkillAtk;
 		}
 		case 3:
 		{
-			Gun* tmp2;
-			tmp2 = (Gun*)tmp;
-			SkillAtk = tmp2->UseSkill(SumAtk);
+			SkillAtk = (*iter)->UseSkill(SumAtk);
 			return SkillAtk;
 		}
 		case 4:
 		{
-			Sword* tmp2;
-			tmp2 = (Sword*)tmp;
-			SkillAtk = tmp2->UseSkill(SumAtk);
+			SkillAtk = (*iter)->UseSkill(SumAtk);
 			return SkillAtk;
 		}
 		case 5:
 		{
-			Wand* tmp2;
-			tmp2 = (Wand*)tmp;
-			SkillAtk = tmp2->UseSkill(SumAtk);
+			SkillAtk = (*iter)->UseSkill(SumAtk);
 			return SkillAtk;
 		}
 		case 6:
 		{
-			Hammer* tmp2;
-			tmp2 = (Hammer*)tmp;
-			SkillAtk = tmp2->UseSkill(SumAtk);
+			SkillAtk = (*iter)->UseSkill(SumAtk);
 			return SkillAtk;
 		}
 		}

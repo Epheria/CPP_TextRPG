@@ -6,32 +6,10 @@ Weapon::Weapon()
 	
 }
 
-vector<Weapon*> Weapon::LoadWeapon(int WEAPONTYPE, vector<Weapon*> WeaponList, Weapon* tmp)
+void Weapon::LoadWeapon(ifstream &fLoad, int iType)
 {
-	ifstream m_fLoad;
-	int iMax;
-	WeaponStatus sTmp;
-
-	m_fLoad.open("WeaponList.txt");
-	if (m_fLoad.is_open())
-	{
-		m_fLoad >> iMax;
-		for (int i = 0; i < iMax; i++)
-		{
-			tmp = new Weapon;
-			m_fLoad >> sTmp.m_iWEAPONTYPE;
-			m_fLoad >> sTmp.m_strName >> sTmp.m_iAttack >> sTmp.m_iPrice;
-			if (WEAPONTYPE == sTmp.m_iWEAPONTYPE)
-			{
-				tmp->SetWeapon(sTmp);
-				WeaponList.push_back(tmp);
-			}
-		}
-	}
-	m_fLoad.close();
-	delete tmp;
-
-	return WeaponList;
+	m_WeaponStatus.m_iWEAPONTYPE = (WEAPONTYPE)iType;
+	fLoad >> m_WeaponStatus.m_strName >> m_WeaponStatus.m_iAttack >> m_WeaponStatus.m_iPrice;
 }
 
 void Weapon::ShowWeapon(int i, int iHeight, string WeaponTypeName)
@@ -46,27 +24,53 @@ void Weapon::ShowWeapon(int i, int iHeight, string WeaponTypeName)
 
 void WeaponManager::LoadAllWeapon()
 {
-	Bow m_Bow;
-	Dagger m_Dagger;
-	Gun m_Gun;
-	Sword m_Sword;
-	Wand m_Wand;
-	Hammer m_Hammer;
+	ifstream fLoad;
+	int iMax, iType;
+	
+	fLoad.open("WeaponList.txt");
+	if (fLoad.is_open())
+	{
+		Weapon* tmp = NULL;
+		fLoad >> iMax;
+		for (int i = 0; i < iMax; i++)
+		{
+			fLoad >> iType;
+			switch ((WEAPONTYPE)iType)
+			{
+			case WEAPONTYPE_BOW:
+				tmp = new Bow();
+				break;
+			case WEAPONTYPE_DAGGER:
+				tmp = new Dagger();
+				break;
+			case WEAPONTYPE_GUN:
+				tmp = new Gun();
+				break;
+			case WEAPONTYPE_HAMMER:
+				tmp = new Hammer();
+				break;
+			case WEAPONTYPE_SWORD:
+				tmp = new Sword();
+				break;
+			case WEAPONTYPE_WAND:
+				tmp = new Wand();
+				break;
+			}
+			tmp->LoadWeapon(fLoad, iType);
+			WeaponList.push_back(tmp);
+		}
 
-	WeaponList = m_Bow.LoadWeapon(BOW, WeaponList, &m_Bow);
-	WeaponList = m_Dagger.LoadWeapon(DAGGER, WeaponList, &m_Dagger);
-	WeaponList = m_Gun.LoadWeapon(GUN, WeaponList, &m_Gun);
-	WeaponList = m_Sword.LoadWeapon(SWORD, WeaponList, &m_Sword);
-	WeaponList = m_Wand.LoadWeapon(WAND, WeaponList, &m_Wand);
-	WeaponList = m_Hammer.LoadWeapon(HAMMER, WeaponList, &m_Hammer);
+		fLoad.close();
+	}
+
 }
 
-int WeaponManager::WeaponCount(int WEAPONTYPE)
+int WeaponManager::WeaponCount(int iType)
 {
 	int iCount = 0;
 	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
-		if ((*iter)->GetWeaponType(iter) == WEAPONTYPE)
+		if ((*iter)->GetWeaponType(iter) == iType)
 		{
 			iCount++;
 		}
@@ -74,12 +78,12 @@ int WeaponManager::WeaponCount(int WEAPONTYPE)
 	return iCount;
 }
 
-int WeaponManager::WeaponIndex(int WEAPONTYPE)
+int WeaponManager::WeaponIndex(int iType)
 {
 	int iIndex = 0;
 	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 	{
-		if ((*iter)->GetWeaponType(iter) == WEAPONTYPE)
+		if ((*iter)->GetWeaponType(iter) == iType)
 		{
 			break;
 		}
@@ -88,7 +92,7 @@ int WeaponManager::WeaponIndex(int WEAPONTYPE)
 	return iIndex;
 }
 
-void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName)
+void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeName)
 {
 	int iSelect;
 	int n = 2;
@@ -98,8 +102,8 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 	{
 		system("cls");
 		int iHeight = HEIGHT - 30;
-		int iMax = WeaponCount(WEAPONTYPE);
-		int iIndex = WeaponIndex(WEAPONTYPE);
+		int iMax = WeaponCount(iType);
+		int iIndex = WeaponIndex(iType);
 		int iIndex_s = iIndex;
 		iGold = User.GetGold();
 		BLUE
@@ -115,7 +119,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 		{
 			if (i > 4)
 				break;
-			if (WeaponList[iIndex]->GetWeaponType() == WEAPONTYPE)
+			if (WeaponList[iIndex]->GetWeaponType() == iType)
 			{
 				WeaponList[iIndex]->ShowWeapon(n, iHeight, WeaponTypeName);
 				iHeight += n + 1;
@@ -168,7 +172,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 			}
 			else if (iSelect == 5 + 1)
 			{
-				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName);
+				ShowWeaponInfo(iType, User, WeaponTypeName);
 				return;
 			}
 			else if (iSelect == 5 + 2)
@@ -177,7 +181,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 				{
 					iMax -= 5;
 				}
-				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName, iMax, iIndex);
+				ShowWeaponInfo(iType, User, WeaponTypeName, iMax, iIndex);
 				return;
 			}
 			else if (iSelect == 5 + 3)
@@ -186,7 +190,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 	}
 }
 
-void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTypeName, int iMax, int iIndex)
+void WeaponManager::ShowWeaponInfo(int iType, Player& User, string WeaponTypeName, int iMax, int iIndex)
 {
 	int iSelect, iCur = 0;
 	int n = 2;
@@ -211,7 +215,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 			{
 				if (i > 4)
 					break;
-				if (WeaponList[iIndex]->GetWeaponType() == WEAPONTYPE)
+				if (WeaponList[iIndex]->GetWeaponType() == iType)
 				{
 					WeaponList[iIndex]->ShowWeapon(n, iHeight, WeaponTypeName);
 					iHeight += n + 1;
@@ -244,7 +248,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 			}
 			else if (iSelect == iMax + 1)
 			{
-				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName);
+				ShowWeaponInfo(iType, User, WeaponTypeName);
 				return;
 			}
 			else if (iSelect == iMax + 2)
@@ -269,7 +273,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 			}
 			else if (iSelect == 5 + 1)
 			{
-				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName);
+				ShowWeaponInfo(iType, User, WeaponTypeName);
 				return;
 			}
 			else if (iSelect == 5 + 2)
@@ -278,7 +282,7 @@ void WeaponManager::ShowWeaponInfo(int WEAPONTYPE, Player& User, string WeaponTy
 				{
 					iMax -= 5;
 				}
-				ShowWeaponInfo(WEAPONTYPE, User, WeaponTypeName, iMax, iIndex);
+				ShowWeaponInfo(iType, User, WeaponTypeName, iMax, iIndex);
 
 				return;
 			}
