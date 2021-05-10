@@ -1,8 +1,9 @@
 #pragma once
 #include "Macro.h"
 
-typedef struct Status
+class Character
 {
+protected:
 	string m_strName;
 	int m_iLevel;
 	int m_iAttack;
@@ -11,12 +12,6 @@ typedef struct Status
 	int m_iDefaultEXP;
 	int m_iGetEXP;
 	int m_iGold;
-}Status;
-
-class Character
-{
-protected:
-	Status m_Status;
 public:
 	virtual inline int Attack() = 0;
 	virtual inline bool DeathCheck();

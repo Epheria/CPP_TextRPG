@@ -8,18 +8,18 @@ Weapon::Weapon()
 
 void Weapon::LoadWeapon(ifstream &fLoad, int iType)
 {
-	m_WeaponStatus.m_iWEAPONTYPE = (WEAPONTYPE)iType;
-	fLoad >> m_WeaponStatus.m_strName >> m_WeaponStatus.m_iAttack >> m_WeaponStatus.m_iPrice;
+	m_eWEAPONTYPE = (WEAPONTYPE)iType;
+	fLoad >> m_strName >> m_iAttack >> m_iPrice;
 }
 
 void Weapon::ShowWeapon(int i, int iHeight, string WeaponTypeName)
 {
 	iHeight += i;
 	m_DrawManager.gotoxy(WIDTH - 8, iHeight);
-	cout << "가격 : " << m_WeaponStatus.m_iPrice << "  무기 타입 : " << WeaponTypeName;
+	cout << "가격 : " << m_iPrice << "  무기 타입 : " << WeaponTypeName;
 	iHeight += 1;
 	m_DrawManager.gotoxy(WIDTH - 12, iHeight);
-	cout << "무기이름 : " << m_WeaponStatus.m_strName << "  공격력 : " << m_WeaponStatus.m_iAttack;
+	cout << "무기이름 : " << m_strName << "  공격력 : " << m_iAttack;
 }
 
 void WeaponManager::LoadAllWeapon()

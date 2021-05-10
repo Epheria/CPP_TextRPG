@@ -13,24 +13,24 @@ public:
 	void ShowInfo(int i ,int iHeight);
 	inline int Attack()
 	{
-		return m_Status.m_iAttack;
+		return m_iAttack;
 	}
 	inline int GiveEXP()
 	{
-		return m_Status.m_iDefaultEXP;
+		return m_iDefaultEXP;
 	}
 	inline int GiveGold()
 	{
-		return m_Status.m_iGold;
+		return m_iGold;
 	}
 	inline string GetName()
 	{
-		return m_Status.m_strName;
+		return m_strName;
 	}
 
 	int ShowHP()
 	{
-		return m_Status.m_iHP;
+		return m_iHP;
 	}
 
 	Monster();

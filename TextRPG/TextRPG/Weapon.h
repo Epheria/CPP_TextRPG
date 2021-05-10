@@ -10,20 +10,16 @@ weapon 자식들을 부모의 load로 불러와서
 자식의 포인터를 업캐스팅해서 -> WeaponManager 의 리스트에 저장하면된다.
 그리고 자식들의 스킬은 오버라이딩해서 다 따로 따로 구현 해주면 된다.
 */
-typedef struct WeaponStatus
-{
-	WEAPONTYPE m_iWEAPONTYPE;
-	int m_iPrice;
-	string m_strName;
-	int m_iAttack;
-}WeaponStatus;
 
 class Player;
 class Weapon
 {
 private:
+	WEAPONTYPE m_eWEAPONTYPE;
+	int m_iPrice;
+	string m_strName;
+	int m_iAttack;
 	MapDraw m_DrawManager;
-	WeaponStatus m_WeaponStatus;
 public:
 	void LoadWeapon(ifstream& fLoad, int iType);
 	void ShowWeapon(int i, int iHeight, string WeaponTypeName);
@@ -41,27 +37,27 @@ public:
 	}
 	int GetWeaponType(vector<Weapon*>::iterator iter)
 	{
-		return (*iter)->m_WeaponStatus.m_iWEAPONTYPE;
+		return (*iter)->m_eWEAPONTYPE;
 	}
 	int GetWeaponType()
 	{
 		int iType;
-		iType = m_WeaponStatus.m_iWEAPONTYPE;
+		iType = m_eWEAPONTYPE;
 		return iType;
 	}
 	int GetPrice()
 	{
-		return m_WeaponStatus.m_iPrice;
+		return m_iPrice;
 	}
 	int GetAttack()
 	{
-		return m_WeaponStatus.m_iAttack;
+		return m_iAttack;
 	}
 	string GetName()
 	{
-		return m_WeaponStatus.m_strName;
+		return m_strName;
 	}
-	void SetWeapon(WeaponStatus tmp) 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄 + WeaponList pushback 할때도 필요..
+	void SetWeapon() 	// Player 의 무기 Load 기능 때문에 Setter 사용 Player.cpp 211줄 + WeaponList pushback 할때도 필요..
 	{
 		m_WeaponStatus.m_iAttack = tmp.m_iAttack;
 		m_WeaponStatus.m_iPrice = tmp.m_iPrice;

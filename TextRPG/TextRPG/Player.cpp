@@ -9,7 +9,7 @@ Player::Player()
 
 void Player::CreateName()
 {
-	cin >> m_Status.m_strName;
+	cin >> m_strName;
 }
 
 void Player::LoadDefaultInfo()
@@ -19,13 +19,13 @@ void Player::LoadDefaultInfo()
 	m_fLoad.open("DefaultPlayer.txt");
 	if (m_fLoad.is_open())
 	{
-		m_fLoad >> m_Status.m_iAttack;
-		m_fLoad >> m_Status.m_iHP;
-		m_fLoad >> m_Status.m_iDefaultEXP;
-		m_fLoad >> m_Status.m_iGetEXP;
-		m_fLoad >> m_Status.m_iLevel;
-		m_fLoad >> m_Status.m_iGold;
-		m_Status.m_iDefaultHP = m_Status.m_iHP;
+		m_fLoad >> m_iAttack;
+		m_fLoad >> m_iHP;
+		m_fLoad >> m_iDefaultEXP;
+		m_fLoad >> m_iGetEXP;
+		m_fLoad >> m_iLevel;
+		m_fLoad >> m_iGold;
+		m_Status.m_iDefaultHP = m_iHP;
 	}
 	m_fLoad.close();
 }
@@ -213,7 +213,6 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 {
 	char ch;
 	int invenSize;
-	WeaponStatus tmp;
 	Weapon* wTmp = new Weapon; // 포인터인데 가리키는 값이 없어서 처음에 에러뜸
 	// 그래서 NULL 로 초기화했더니 SetWeapon 에서 예외발생함
 	// 그래서 Weapon.cpp 에서 WeaponList.txt 불러올때랑 마찬가지로 동적할당으로 변경
@@ -226,7 +225,7 @@ void Player::Load(ifstream& m_fLoad, int iSelect)
 		for (int i = 0; i < invenSize; i++)
 		{
 			int iType;
-			m_fLoad >> iType >> tmp.m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
+			m_fLoad >> iType >> m_strName >> tmp.m_iAttack >> tmp.m_iPrice;
 			tmp.m_iWEAPONTYPE = (WEAPONTYPE)iType;
 			wTmp->SetWeapon(tmp);
 			m_Inventory.push_back(wTmp);

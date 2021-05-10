@@ -28,11 +28,11 @@ public:
 
 	inline int GetGold()
 	{
-		return m_Status.m_iGold;
+		return m_iGold;
 	}
 	inline void BuyWeapon(int iPrice)
 	{
-		m_Status.m_iGold -= iPrice;
+		m_iGold -= iPrice;
 	}
 	inline void EquipWeapon(vector<Weapon*> WeaponList, int index)
 	{
@@ -44,7 +44,7 @@ public:
 	}
 	inline void ResetWeapon()
 	{
-		m_Status.m_iDefaultHP = 1000;
+		m_iDefaultHP = 1000;
 		m_iEXP = 0;
 		m_bWeapon = false;
 		m_Inventory.clear();
