@@ -209,27 +209,46 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 	ch = _getch();
 }
 
-void Player::Load(ifstream& m_fLoad, int iSelect)
+void Player::Load(ifstream& fLoad, int iSelect)
 {
 	char ch;
 	int invenSize;
 	string strName;
 	int iAtk, iPrice, iType;
+	Weapon* tmp = NULL;
 
-	Weapon* wTmp = new Weapon; // 포인터인데 가리키는 값이 없어서 처음에 에러뜸
-	// 그래서 NULL 로 초기화했더니 SetWeapon 에서 예외발생함
-	// 그래서 Weapon.cpp 에서 WeaponList.txt 불러올때랑 마찬가지로 동적할당으로 변경
-
-	m_fLoad >> m_strName >> m_iAttack >> m_iHP >> 
+	fLoad >> m_strName >> m_iAttack >> m_iHP >> 
 		m_iDefaultEXP >> m_iGetEXP >> m_iLevel >> m_iGold >> m_iEXP >> m_iDefaultHP;
-	m_fLoad >> invenSize;
+	fLoad >> invenSize;
 	if (invenSize > 0)
 	{
 		for (int i = 0; i < invenSize; i++)
 		{
-			m_fLoad >> iType >> strName >> iAtk >> iPrice;
-			wTmp->SetWeapon((WEAPONTYPE)iType, strName, iAtk, iPrice);
-			m_Inventory.push_back(wTmp);
+			fLoad >> iType;
+			switch ((WEAPONTYPE)iType)
+			{
+			case WEAPONTYPE_BOW:
+				tmp = new Bow();
+				break;
+			case WEAPONTYPE_DAGGER:
+				tmp = new Dagger();
+				break;
+			case WEAPONTYPE_GUN:
+				tmp = new Gun();
+				break;
+			case WEAPONTYPE_HAMMER:
+				tmp = new Hammer();
+				break;
+			case WEAPONTYPE_SWORD:
+				tmp = new Sword();
+				break;
+			case WEAPONTYPE_WAND:
+				tmp = new Wand();
+				break;
+			}
+			fLoad >> strName >> iAtk >> iPrice;
+			tmp->SetWeapon((WEAPONTYPE)iType, strName, iAtk, iPrice);
+			m_Inventory.push_back(tmp);
 		}
 	}
 	system("cls");

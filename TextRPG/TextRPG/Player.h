@@ -23,7 +23,7 @@ public:
 	void LevelUP();
 	void Win(Monster m_Monster, int index);
 	void Save(ofstream& m_fSave, int iSelect, string m_FileName[]);
-	void Load(ifstream& m_fLoad, int iSelect);
+	void Load(ifstream& fLoad, int iSelect);
 	int Attack();
 
 	inline int GetGold()
