@@ -134,24 +134,22 @@ void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string Weapon
 		}
 		else
 		{
-			int iSel;
+			int iSel, page = 1;
 			if (iMax > 5)
-			{
 				iSel = 5;
-			}
 			else
-			{
 				iSel = iMax;
-			}
 
 			iter = ShowList(tmp, iter, User, WeaponTypeName);
-			iter2 = iter;
+			iter2 = iter - 5;
 
 			iSelect = m_DrawManager.MenuSelectCursor(iSel + 3, 3, WIDTH / 4, HEIGHT - 26);
-			index += iSelect - 1;
-
-			if (iSelect <= 5)
+			
+			if (iSelect <= iSel)
 			{
+
+				index += iSelect - 1;
+
 				if (iGold < tmp[index]->GetPrice())
 				{
 					index = 0;
@@ -166,13 +164,14 @@ void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string Weapon
 				index = 0;
 				continue;
 			}
-			else if (iSelect == 6)
+			else if (iSelect == iSel + 1)
 			{
-				if (iMax != tmp.size())
+				if (iMax != tmp.size() && page != 1)
 				{
+					page--;
 					index -= 5;
 					iMax += 5;
-					iter - 4;
+					iter - 5;
 				}
 				else
 				{
@@ -180,20 +179,21 @@ void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string Weapon
 				}
 				continue;
 			}
-			else if (iSelect == 7)
+			else if (iSelect == iSel + 2)
 			{
 				if (iMax > 5)
 				{
+					page++;
 					index += 5;
 					iMax -= 5;
 				}
 				else
 				{
-					iter = iter2;
+					iter--;
 				}
 				continue;
 			}
-			else if (iSelect == 8)
+			else if (iSelect == iSel + 3)
 				return;
 		}
 	}
