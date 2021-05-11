@@ -80,7 +80,6 @@ public:
 	void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName);
 	//void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName, int iMax, int iIndex);
 	void ShowList(vector<Weapon*> tmp, Player& User, string WeaponTypeName);
-	vector<Weapon*>::iterator ShowList(vector<Weapon*>& tmp, vector<Weapon*>::iterator& iter, Player& User, string WeaponTypeName);
 	int WeaponIndex(WEAPONTYPE eType);
 };
 
