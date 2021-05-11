@@ -63,34 +63,6 @@ void WeaponManager::LoadAllWeapon()
 		fLoad.close();
 	}
 }
-	
-int WeaponManager::WeaponCount(WEAPONTYPE eType)
-{
-	int iCount = 0;
-	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
-	{
-		if ((*iter)->GetWeaponType(iter) == eType)
-		{
-			
-			iCount++;
-		}
-	}
-	return iCount;
-}
-
-int WeaponManager::WeaponIndex(WEAPONTYPE eType)
-{
-	int iIndex = 0;
-	for (vector<Weapon*>::iterator iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
-	{
-		if ((*iter)->GetWeaponType(iter) == eType)
-		{
-			break;
-		}
-		iIndex++;
-	}
-	return iIndex;
-}
 
 void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName)
 {
@@ -125,6 +97,16 @@ void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string Weapon
 				continue;
 			else
 			{
+				if (User.InvenLimitCheck() == true)
+				{
+					system("cls");
+					BLUE
+						m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+					ORIGINAL
+						m_DrawManager.DrawMidText("ÀÎº¥Åä¸® °¡ ²ËÃ¡½À´Ï´Ù.", WIDTH, HEIGHT /2);
+					char ch = _getch();
+					continue;
+				}
 				User.BuyWeapon(tmp[index + iSelect - 1]->GetPrice());
 				User.EquipWeapon(tmp, index + iSelect - 1);
 				continue;

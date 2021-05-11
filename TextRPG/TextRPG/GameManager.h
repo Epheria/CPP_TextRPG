@@ -9,7 +9,6 @@ class GameManager : public MapDraw
 {
 private:
 	Player m_User;
-	Monster m_Monster;
 	MonsterManager m_MonsterManager;
 	WeaponManager m_WeaponManager;
 	Weapon m_Weapon;
@@ -27,8 +26,8 @@ public:
 	void ShowDungeon();
 	void ShowShopMenu();
 	void Battle(int index);
-	bool WinnerCheck(char MonsterAtk, char UserAtk, int index);
-	void PrintAttack(char ch);
+	bool WinnerCheck(int MonsterAtk, int UserAtk, int index);
+	void PrintAttack(int iAttack);
 	void GameOver();
 	GameManager();
 	~GameManager();

@@ -49,8 +49,9 @@ void Player::ShowInfo()
 		}
 		ORIGINAL
 			m_DrawManager.DrawMidText("인벤토리", WIDTH, HEIGHT / 2 + 3);
-		m_DrawManager.DrawMidText("나가기", WIDTH, HEIGHT / 2 + 6);
-		iSelect = m_DrawManager.MenuSelectCursor(2, 3, WIDTH / 4, HEIGHT / 2 + 3);
+			m_DrawManager.DrawMidText("무기 해제", WIDTH, HEIGHT / 2 + 6);
+		m_DrawManager.DrawMidText("나가기", WIDTH, HEIGHT / 2 + 9);
+		iSelect = m_DrawManager.MenuSelectCursor(3, 3, WIDTH / 4, HEIGHT / 2 + 3);
 
 		switch (iSelect)
 		{
@@ -58,6 +59,9 @@ void Player::ShowInfo()
 			ShowInventory();
 			break;
 		case 2:
+			DeleteWeapon();
+			break;
+		case 3:
 			return;
 		}
 	}
@@ -98,6 +102,39 @@ void Player::ShowInventory()
 	iSelect = m_DrawManager.MenuSelectCursor(m_Inventory.size(), 2, WIDTH / 4, HEIGHT - 28);
 	m_iWeaponSelect = iSelect - 1;
 	m_bWeapon = true;
+}
+
+void Player::DeleteWeapon()
+{
+	int iSelect;
+	int n = 2;
+	if (m_Inventory.empty())
+		return;
+
+	system("cls");
+	int iHeight = HEIGHT - 30;
+	BLUE
+		m_DrawManager.BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
+	ORIGINAL
+		m_DrawManager.DrawMidText("§§§ Inventory §§§", WIDTH, iHeight);
+	YELLOW
+		for (vector<Weapon*>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
+		{
+			iHeight += n;
+			m_DrawManager.gotoxy(WIDTH - 8, iHeight);
+			cout << (*iter)->GetName();
+		}
+	iSelect = m_DrawManager.MenuSelectCursor(m_Inventory.size(), 2, WIDTH / 4, HEIGHT - 28);
+	for (vector<Weapon*>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
+	{
+		if ((*iter)->GetName() == m_Inventory[iSelect - 1]->GetName())
+		{
+			m_Inventory.erase(iter);
+			if (m_Inventory.empty())
+				m_bWeapon = false;
+			break;
+		}
+	}
 }
 
 void Player::ShowWeaponType(int iType)
@@ -249,6 +286,8 @@ void Player::Load(ifstream& fLoad, int iSelect)
 			fLoad >> strName >> iAtk >> iPrice;
 			tmp->SetWeapon((WEAPONTYPE)iType, strName, iAtk, iPrice);
 			m_Inventory.push_back(tmp);
+			m_iWeaponSelect = 0;
+			m_bWeapon = true;
 		}
 	}
 	system("cls");
@@ -262,7 +301,6 @@ void Player::Load(ifstream& fLoad, int iSelect)
 
 int Player::Attack()
 {
-	Weapon* tmp;
 	vector<Weapon*>::iterator iter;
 	int SkillAtk;
 	int SumAtk;

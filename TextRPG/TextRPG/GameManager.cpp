@@ -50,6 +50,7 @@ void GameManager::NewGame()
 	m_User.CreateName();
 	m_User.LoadDefaultInfo();
 	m_MonsterManager.LoadDefaultInfo();
+	m_WeaponManager.LoadAllWeapon();
 	ShowGameMenu();
 }
 
@@ -156,7 +157,8 @@ void GameManager::LoadCheck(ifstream& m_fLoad, int iSelect)
 		m_bGameOver = false;
 		m_User.Load(m_fLoad, iSelect);
 		m_MonsterManager.LoadDefaultInfo();
-		
+		m_WeaponManager.LoadAllWeapon();
+
 		ShowGameMenu();
 	}
 }
@@ -204,6 +206,7 @@ void GameManager::ShowGameMenu()
 			m_MonsterManager.ResetMonster();
 			m_User.LoadDefaultInfo();
 			m_User.ResetWeapon();
+			m_WeaponManager.ClearWeaponList();
 			return;
 		}
 	}
@@ -277,7 +280,8 @@ void GameManager::ShowDungeon()
 void GameManager::Battle(int index)
 {
 	bool flag = false;
-	char input, MonsterAtk;
+	char input;
+	int PlayerAtk, MonsterAtk;
 	srand(time(NULL));
 	while (1)
 	{
@@ -292,12 +296,21 @@ void GameManager::Battle(int index)
 			DrawMidText("------------------------ vs ----------------------------", WIDTH, HEIGHT - 15);
 		ORIGINAL
 			m_MonsterManager.BattleInfo(index);
-		MonsterAtk = m_Monster.AttackRes();
+		MonsterAtk = m_MonsterManager.GetMonster()[index].AttackRes();
 		
 		input = _getch();
 		if (input != '1' && input != '2' && input != '3')
 			continue;
-		flag = WinnerCheck(MonsterAtk, input, index);
+		else
+		{
+			if (input == '1')
+				PlayerAtk = ATTACK_ROCK;
+			else if (input == '2')
+				PlayerAtk = ATTACK_SCISSORS;
+			else if (input == '3')
+				PlayerAtk = ATTACK_PAPER;
+		}
+		flag = WinnerCheck(MonsterAtk, PlayerAtk, index);
 		if (flag == true)
 		{
 			m_MonsterManager.GetDamage(index , m_User.Attack());
@@ -316,19 +329,15 @@ void GameManager::Battle(int index)
 			string strMonsterName;
 			char ch;
 			strMonsterName = m_MonsterManager.GetName(index);
-			if (MonsterAtk == input)
+			if (MonsterAtk == PlayerAtk)
 				continue;
 
 			m_User.GetDamage(m_MonsterManager.GetAttack(index));
-			system("cls");
-			BLUE
-				BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
-			RED
-				gotoxy(WIDTH - 4, HEIGHT - 20);
-			cout  << strMonsterName << " 승리!!";
-			ch = _getch();
 			if (m_User.DeathCheck() == true)
 			{
+				system("cls");
+				BLUE
+					BoxDraw(START_X, START_Y, WIDTH, HEIGHT);
 				GameOver();
 				return;
 			}
@@ -338,7 +347,7 @@ void GameManager::Battle(int index)
 	}
 }
 
-bool GameManager::WinnerCheck(char MonsterAtk, char UserAtk, int index)
+bool GameManager::WinnerCheck(int MonsterAtk, int UserAtk, int index)
 {
 	char ch;
 	if (MonsterAtk == UserAtk)
@@ -352,7 +361,7 @@ bool GameManager::WinnerCheck(char MonsterAtk, char UserAtk, int index)
 		ch = _getch();
 		return false;
 	}
-	else if (MonsterAtk == '1' && UserAtk == '2')
+	else if (MonsterAtk == ATTACK_SCISSORS && UserAtk == ATTACK_ROCK)
 	{
 		gotoxy(WIDTH, HEIGHT - 19);
 		PrintAttack(UserAtk);
@@ -362,7 +371,7 @@ bool GameManager::WinnerCheck(char MonsterAtk, char UserAtk, int index)
 		PrintAttack(MonsterAtk);
 		ch = _getch();
 	}
-	else if (MonsterAtk == '2' && UserAtk == '3')
+	else if (MonsterAtk == ATTACK_PAPER && UserAtk == ATTACK_SCISSORS)
 	{
 		gotoxy(WIDTH, HEIGHT - 19);
 		PrintAttack(UserAtk);
@@ -372,7 +381,7 @@ bool GameManager::WinnerCheck(char MonsterAtk, char UserAtk, int index)
 		PrintAttack(MonsterAtk);
 		ch = _getch();
 	}
-	else if (MonsterAtk == '3' && UserAtk == '1')
+	else if (MonsterAtk == ATTACK_ROCK && UserAtk == ATTACK_PAPER)
 	{
 		gotoxy(WIDTH, HEIGHT - 19);
 		PrintAttack(UserAtk);
@@ -397,19 +406,18 @@ bool GameManager::WinnerCheck(char MonsterAtk, char UserAtk, int index)
 	return true;
 }
 
-void GameManager::PrintAttack(char ch)
+void GameManager::PrintAttack(int iAttack)
 {
-	if (ch == '1')
+	if (iAttack == ATTACK_SCISSORS)
 		cout << "가위";
-	else if (ch == '2')
+	else if (iAttack == ATTACK_ROCK)
 		cout << "바위";
-	else if (ch == '3')
+	else if (iAttack == ATTACK_PAPER)
 		cout << "보";
 }
 
 void GameManager::ShowShopMenu()
 {
-	m_WeaponManager.LoadAllWeapon();
 	int iSelect;
 
 	while (1)

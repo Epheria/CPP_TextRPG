@@ -8,7 +8,7 @@ class Monster : public Character
 private:
 	MapDraw DrawManager;
 public:
-	char AttackRes();
+	int AttackRes();
 	void StatusLoad(Monster tmp, vector<Monster>& MonsterList);
 	void ShowInfo(int i ,int iHeight);
 	inline int Attack()

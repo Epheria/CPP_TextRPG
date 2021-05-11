@@ -76,11 +76,12 @@ private:
 	vector<Weapon*> WeaponList;
 public:
 	void LoadAllWeapon();
-	int WeaponCount(WEAPONTYPE eType);
 	void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName);
-	//void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName, int iMax, int iIndex);
 	void ShowList(vector<Weapon*> tmp, Player& User, string WeaponTypeName, int iPage, int iMax);
-	int WeaponIndex(WEAPONTYPE eType);
+	void ClearWeaponList()
+	{
+		WeaponList.clear();
+	}
 };
 
 class Bow : public Weapon
@@ -99,6 +100,7 @@ public:
 			ch = _getch();
 			return PlayerAtk * 2;
 		}
+		return PlayerAtk;
 	}
 };
 
@@ -118,6 +120,7 @@ public:
 			ch = _getch();
 			return PlayerAtk * 3;
 		}
+		return PlayerAtk;
 	}
 };
 
@@ -137,6 +140,7 @@ public:
 			ch = _getch();
 			return PlayerAtk * 4;
 		}
+		return PlayerAtk;
 	}
 };
 
@@ -156,6 +160,7 @@ public:
 			ch = _getch();
 			return PlayerAtk * 3;
 		}
+		return PlayerAtk;
 	}
 };
 
@@ -175,6 +180,7 @@ public:
 			ch = _getch();
 			return PlayerAtk * 6;
 		}
+		return PlayerAtk;
 	}
 };
 
@@ -194,5 +200,6 @@ public:
 			ch = _getch();
 			return PlayerAtk * 4;
 		}
+		return PlayerAtk;
 	}
 };

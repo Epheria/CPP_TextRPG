@@ -20,12 +20,20 @@ public:
 	void PlayerInfo(int iHeight);
 	void ShowWeaponType(int iType);
 	void ShowInventory();
+	void DeleteWeapon();
 	void LevelUP();
 	void Win(Monster m_Monster, int index);
 	void Save(ofstream& m_fSave, int iSelect, string m_FileName[]);
 	void Load(ifstream& fLoad, int iSelect);
 	int Attack();
 
+	inline bool InvenLimitCheck()
+	{
+		if (m_Inventory.size() > 9)
+			return true;
+		else
+			return false;
+	}
 	inline int GetGold()
 	{
 		return m_iGold;

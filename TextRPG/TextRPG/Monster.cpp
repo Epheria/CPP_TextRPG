@@ -38,9 +38,9 @@ void Monster::ShowInfo(int i, int iHeight)
 	cout << "Gold = " << m_iGold << endl;
 }
 
-char Monster::AttackRes()
+int Monster::AttackRes()
 {
-	char Attack[] = { '1', '2', '3' };
+	int Attack[] = { ATTACK_ROCK, ATTACK_SCISSORS, ATTACK_PAPER};
 	int res;
 	res = rand() % 2;
 	return Attack[res];
