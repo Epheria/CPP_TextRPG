@@ -94,138 +94,70 @@ int WeaponManager::WeaponIndex(WEAPONTYPE eType)
 
 void WeaponManager::ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName)
 {
-	int iSelect;
-	int iSel, page = 1;
+	int iSelect, index;
+	int iSel;
 	int n = 2;
 	int iGold = User.GetGold(), iCur = 0;
 	vector<Weapon*> tmp;
-	vector<Weapon*> tmp2;
-	vector<Weapon*> tmp3;
 	vector<Weapon*>::iterator iter;
 
 	for (iter = WeaponList.begin(); iter != WeaponList.end(); iter++)
 		if ((*iter)->GetWeaponType() == eType)
 			tmp.push_back(*iter);
 
+	int iCurPageIndex = 1;
+	int iMaxPage = tmp.size() / 5 + 1;
 	int iMax = tmp.size();
-	iter = tmp.begin();
-
 	while (1)
 	{
-		if (tmp.size() <= 5)
-		{
-			ShowList(tmp, User, WeaponTypeName);
-			iSelect = m_DrawManager.MenuSelectCursor(tmp.size() + 3, 3, WIDTH / 4, HEIGHT - 26);
-			if (iSelect <= tmp.size())
-			{
-				if (iGold < tmp[iSelect - 1]->GetPrice())
-					continue;
-				else
-				{
-					User.BuyWeapon(tmp[iSelect - 1]->GetPrice());
-					User.EquipWeapon(tmp, iSelect - 1);
-				}
-				continue;
-			}
-			else if (iSelect == tmp.size() + 1)
-				continue;
-			else if (iSelect == tmp.size() + 2)
-				continue;
-			else if (iSelect == tmp.size() + 3)
-				return;
-		}
+		if (iMax > 5)
+			iSel = 5;
 		else
+			iSel = iMax;
+
+		ShowList(tmp, User, WeaponTypeName, iCurPageIndex, iSel);
+		iSelect = m_DrawManager.MenuSelectCursor(iSel + 3, 3, WIDTH / 4, HEIGHT - 26);
+
+		if (iSelect <= iSel)
 		{
-			if (iMax > 5)
-				iSel = 5;
-			else
-				iSel = iMax;
-
-			if (page == 1)
-			{
-				ShowList(tmp, User, WeaponTypeName);
-				iSelect = m_DrawManager.MenuSelectCursor(iSel + 3, 3, WIDTH / 4, HEIGHT - 26);
-				if (iSelect <= iSel)
-				{
-					if (iGold < tmp[iSelect - 1]->GetPrice())
-						continue;
-					else
-					{
-						User.BuyWeapon(tmp[iSelect - 1]->GetPrice());
-						User.EquipWeapon(tmp, iSelect - 1);
-					}
-				}
-				else if (iSelect == iSel + 1)
-				{
-					continue;
-				}
-				else if (iSelect == iSel + 2)
-				{
-					int iCur = 0;
-					iMax -= 5;
-					page++;
-					for (iter = tmp.begin(); iter != tmp.end(); iter++)
-					{
-						tmp2.clear();
-						if (iCur > 4)
-							tmp2.push_back(*iter);
-						iCur++;
-
-					}
-					continue;
-				}
-				else if (iSelect == iSel + 3)
-					return;
-			}
+			index = 0 + (iCurPageIndex - 1) * 5;
+			if (iGold < tmp[index + iSelect - 1]->GetPrice())
+				continue;
 			else
 			{
-				ShowList(tmp2, User, WeaponTypeName);
-				iSelect = m_DrawManager.MenuSelectCursor(iSel + 3, 3, WIDTH / 4, HEIGHT - 26);
-				if (iSelect <= iSel)
-				{
-					if (iGold < tmp[iSelect + 5 - 1]->GetPrice())
-						continue;
-					else
-					{
-						User.BuyWeapon(tmp[iSelect + 5 - 1]->GetPrice());
-						User.EquipWeapon(tmp, iSelect + 5 - 1);
-					}
-				}
-				else if (iSelect == iSel + 1)
-				{
-					iMax += 5;
-					page--;
-					continue;
-				}
-				else if (iSelect == iSel + 2)
-				{
-					if (iMax < 5)
-					{
-						continue;
-					}
-					int iCur = 0;
-					iMax -= 5;
-					page++;
-					for (iter = tmp2.begin(); iter != tmp2.end(); iter++)
-					{
-						tmp3.clear();
-						if (iCur > 4)
-							tmp3.push_back(*iter);
-						iCur++;
-					}
-					ShowList(tmp3, User, WeaponTypeName);
-					continue;
-				}
-				else if (iSelect == iSel + 3)
-					return;
+				User.BuyWeapon(tmp[index + iSelect - 1]->GetPrice());
+				User.EquipWeapon(tmp, index + iSelect - 1);
+				continue;
 			}
 		}
+		else if (iSelect == iSel + 1)
+		{
+			if (iCurPageIndex == 1)
+				continue;
+			iMax += 5;
+			iCurPageIndex--;
+			continue;
+		}
+		else if (iSelect == iSel + 2)
+		{
+			if (iCurPageIndex == iMaxPage)
+				continue;
+			iMax -= 5;
+			iCurPageIndex++;
+			continue;
+		}
+		else if (iSelect == iSel + 3)
+			return;
 	}
+
 }
 
-void WeaponManager::ShowList(vector<Weapon*> tmp, Player& User, string WeaponTypeName)
+void WeaponManager::ShowList(vector<Weapon*> tmp, Player& User, string WeaponTypeName, int iPage, int iMax)
 {
 	int iGold, n = 2, iCur = 0;
+	int index;
+
+	index = 0 + (iPage - 1) * 5;
 
 	system("cls");
 	int iHeight = HEIGHT - 30;
@@ -239,14 +171,10 @@ void WeaponManager::ShowList(vector<Weapon*> tmp, Player& User, string WeaponTyp
 	m_DrawManager.DrawMidText(WeaponTypeName, WIDTH, iHeight);
 	cout << " Shop";
 	YELLOW
-		for (vector<Weapon*>::iterator iter = tmp.begin(); iter != tmp.end(); iter++)
+		for (int i = 0; i < iMax; i++)
 		{
-			if (iCur == 5)
-				break;
-
-			(*iter)->ShowWeapon(n, iHeight, WeaponTypeName);
+			tmp[index + i]->ShowWeapon(n, iHeight, WeaponTypeName);
 			iHeight += n + 1;
-			iCur++;
 		}
 	ORIGINAL
 		iHeight += n;

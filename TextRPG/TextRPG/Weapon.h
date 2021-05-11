@@ -79,7 +79,7 @@ public:
 	int WeaponCount(WEAPONTYPE eType);
 	void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName);
 	//void ShowWeaponInfo(WEAPONTYPE eType, Player& User, string WeaponTypeName, int iMax, int iIndex);
-	void ShowList(vector<Weapon*> tmp, Player& User, string WeaponTypeName);
+	void ShowList(vector<Weapon*> tmp, Player& User, string WeaponTypeName, int iPage, int iMax);
 	int WeaponIndex(WEAPONTYPE eType);
 };
 
