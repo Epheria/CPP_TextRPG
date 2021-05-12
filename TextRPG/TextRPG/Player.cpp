@@ -248,9 +248,15 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 		{
 			for (vector<Weapon*>::iterator iter = m_Inventory.begin(); iter != m_Inventory.end(); iter++)
 			{
-				m_fSave << (*iter)->GetWeaponType() << " " << (*iter)->GetName() << " " << (*iter)->GetAttack() << " " << (*iter)->GetPrice() << endl;
+				m_fSave << (*iter)->GetWeaponType() << " " << (*iter)->GetName() << " " << (*iter)->GetAttack() << " " << (*iter)->GetPrice();
+				if (m_bWeapon == true)
+					m_fSave << " " << 1 << " " << m_iWeaponSelect << endl;
+				else
+					m_fSave << " " << 0 << " " << m_iWeaponSelect << endl;
+
 			}
 		}
+		m_fSave.close();
 	}
 	system("cls");
 	BLUE
@@ -266,7 +272,8 @@ void Player::Load(ifstream& fLoad, int iSelect)
 	char ch;
 	int invenSize;
 	string strName;
-	int iAtk, iPrice, iType;
+	int iAtk, iPrice, iType , iDummy;
+	bool bFlag;
 	Weapon* tmp = NULL;
 
 	fLoad >> m_strName >> m_iAttack >> m_iHP >> 
@@ -299,10 +306,19 @@ void Player::Load(ifstream& fLoad, int iSelect)
 				break;
 			}
 			fLoad >> strName >> iAtk >> iPrice;
-			tmp->SetWeapon((WEAPONTYPE)iType, strName, iAtk, iPrice);
+			fLoad >> bFlag;
+			if (bFlag == 1)
+			{
+				m_bWeapon = true;
+				fLoad >> m_iWeaponSelect;
+			}
+			else if(bFlag == 0)
+			{
+				m_bWeapon = false;
+				fLoad >> iDummy;
+			}
+				tmp->SetWeapon((WEAPONTYPE)iType, strName, iAtk, iPrice);
 			m_Inventory.push_back(tmp);
-			m_iWeaponSelect = 0;
-			m_bWeapon = true;
 		}
 	}
 	system("cls");
