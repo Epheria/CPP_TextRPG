@@ -20,6 +20,7 @@ public:
 	void PlayerInfo(int iHeight);
 	void ShowWeaponType(int iType);
 	void ShowInventory();
+	void ReleaseWeapon();
 	void DeleteWeapon();
 	void LevelUP();
 	void Win(Monster m_Monster, int index);

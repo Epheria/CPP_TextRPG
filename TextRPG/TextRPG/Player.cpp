@@ -50,8 +50,9 @@ void Player::ShowInfo()
 		ORIGINAL
 			m_DrawManager.DrawMidText("인벤토리", WIDTH, HEIGHT / 2 + 3);
 			m_DrawManager.DrawMidText("무기 해제", WIDTH, HEIGHT / 2 + 6);
-		m_DrawManager.DrawMidText("나가기", WIDTH, HEIGHT / 2 + 9);
-		iSelect = m_DrawManager.MenuSelectCursor(3, 3, WIDTH / 4, HEIGHT / 2 + 3);
+			m_DrawManager.DrawMidText("무기 삭제", WIDTH, HEIGHT / 2 + 9);
+		m_DrawManager.DrawMidText("나가기", WIDTH, HEIGHT / 2 + 12);
+		iSelect = m_DrawManager.MenuSelectCursor(4, 3, WIDTH / 4, HEIGHT / 2 + 3);
 
 		switch (iSelect)
 		{
@@ -59,9 +60,12 @@ void Player::ShowInfo()
 			ShowInventory();
 			break;
 		case 2:
-			DeleteWeapon();
+			ReleaseWeapon();
 			break;
 		case 3:
+			DeleteWeapon();
+			break;
+		case 4:
 			return;
 		}
 	}
@@ -104,6 +108,16 @@ void Player::ShowInventory()
 	m_bWeapon = true;
 }
 
+void Player::ReleaseWeapon()
+{
+	if (m_Inventory.empty())
+		return;
+	else
+	{
+		m_bWeapon = false;
+	}
+}
+
 void Player::DeleteWeapon()
 {
 	int iSelect;
@@ -130,6 +144,7 @@ void Player::DeleteWeapon()
 		if ((*iter)->GetName() == m_Inventory[iSelect - 1]->GetName())
 		{
 			m_Inventory.erase(iter);
+			m_iWeaponSelect = 0;
 			if (m_Inventory.empty())
 				m_bWeapon = false;
 			break;
@@ -304,7 +319,7 @@ int Player::Attack()
 	vector<Weapon*>::iterator iter;
 	int SkillAtk;
 	int SumAtk;
-	if (m_Inventory.empty())
+	if (m_Inventory.empty() || m_bWeapon == false)
 		return m_iAttack;
 	else
 	{
