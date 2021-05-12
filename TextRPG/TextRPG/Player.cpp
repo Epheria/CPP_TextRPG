@@ -250,9 +250,9 @@ void Player::Save(ofstream& m_fSave, int iSelect, string m_FileName[])
 			{
 				m_fSave << (*iter)->GetWeaponType() << " " << (*iter)->GetName() << " " << (*iter)->GetAttack() << " " << (*iter)->GetPrice();
 				if (m_bWeapon == true)
-					m_fSave << " " << 1 << " " << m_iWeaponSelect << endl;
+					m_fSave << " " << TRUE << " " << m_iWeaponSelect << endl;
 				else
-					m_fSave << " " << 0 << " " << m_iWeaponSelect << endl;
+					m_fSave << " " << FALSE << " " << m_iWeaponSelect << endl;
 
 			}
 		}
@@ -307,12 +307,12 @@ void Player::Load(ifstream& fLoad, int iSelect)
 			}
 			fLoad >> strName >> iAtk >> iPrice;
 			fLoad >> bFlag;
-			if (bFlag == 1)
+			if (bFlag == TRUE)
 			{
 				m_bWeapon = true;
 				fLoad >> m_iWeaponSelect;
 			}
-			else if(bFlag == 0)
+			else if(bFlag == FALSE)
 			{
 				m_bWeapon = false;
 				fLoad >> iDummy;
